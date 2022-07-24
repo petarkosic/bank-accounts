@@ -31,22 +31,23 @@ CREATE TABLE client_accounts_limit (
     client_id SERIAL, 
     account_id SERIAL,
     type_of_customer type_of_customer NOT NULL DEFAULT 'regular',
-    type_of_account type_of_account NOT NULL,
-    card_limit INTEGER NOT NULL CHECK(
-        CASE WHEN type_of_account = 'debit' THEN card_limit = 0
-        WHEN type_of_account = 'credit' AND type_of_customer = 'regular' THEN card_limit = 5000
-        WHEN type_of_account = 'credit' AND type_of_customer = 'premium' THEN card_limit = 20000
-        END),
-    withdrawal_fee INTEGER CHECK(
-        CASE WHEN type_of_customer = 'regular' THEN withdrawal_fee = 1
-        WHEN type_of_customer = 'premium' THEN withdrawal_fee = 0
-        END),
+    type_of_account type_of_account NOT NULL DEFAULT 'credit',
     credit_payment credit_payment_type NOT NULL,
     PRIMARY KEY (client_limit_id),
     FOREIGN KEY (client_id) REFERENCES clients(client_id),
     FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
 
+ALTER TABLE client_accounts_limit ADD card_limit INTEGER NOT NULL DEFAULT 5000;
+
+UPDATE client_accounts_limit
+SET card_limit = 
+CASE WHEN type_of_account = 'debit' THEN 0 WHEN type_of_account = 'credit' AND type_of_customer = 'regular' THEN 5000 WHEN type_of_account = 'credit' AND type_of_customer = 'premium' THEN 20000 END;
+
+ALTER TABLE client_accounts_limit ADD withdrawal_fee INTEGER NOT NULL DEFAULT 1;
+
+UPDATE client_accounts_limit
+SET withdrawal_fee = CASE WHEN type_of_customer = 'regular' THEN 1 WHEN type_of_customer = 'premium' THEN 0 END;
 
 CREATE TABLE accounts (
     account_id SERIAL,

@@ -14,6 +14,8 @@ CREATE TABLE clients (
     PRIMARY KEY (client_id)
 );
 
+-- INSERT INTO clients (client_id, first_name, last_name, date_of_birth, list_of_accounts) VALUES (1, 'John', 'Doe', '1996-12-01', '{123, 456, 789}');
+
 CREATE TABLE client_address (
     client_address_id SERIAL,
     client_id SERIAL,
@@ -26,34 +28,38 @@ CREATE TABLE client_address (
     FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
 
-CREATE TABLE client_accounts_limit (
-    client_limit_id SERIAL, 
-    client_id SERIAL, 
+-- INSERT INTO client_address (client_id, country_name, country_code, street_name, house_number, postal_code) VALUES (1, 'Serbia', 'SRB', 'Blablabla', '90', '11000');
+
+CREATE TABLE accounts (
+    account_id SERIAL,
+    client_id SERIAL,
+    account_number VARCHAR(10) NOT NULL CHECK(account_number ~ '^\d{3}-\d{3}-\d{2}$'),
+    currency_name VARCHAR(50) NOT NULL,
+    currency_code VARCHAR(5) NOT NULL,
+    deposited_amount NUMERIC(20, 4) NOT NULL DEFAULT 0,
+    PRIMARY KEY (account_id),
+    FOREIGN KEY (client_id) REFERENCES clients(client_id)
+);
+
+-- INSERT INTO accounts (account_id, client_id, account_number, currency_name, currency_code, deposited_amount) VALUES (1, 1, '412-142-23', 'dinar', 'RSD', 1200);
+
+CREATE TABLE accounts_limit (
+    accounts_limit_id SERIAL, 
     account_id SERIAL,
     type_of_customer type_of_customer NOT NULL DEFAULT 'regular',
     type_of_account type_of_account NOT NULL DEFAULT 'credit',
     credit_payment credit_payment_type NOT NULL,
-    PRIMARY KEY (client_limit_id),
-    FOREIGN KEY (client_id) REFERENCES clients(client_id),
+    card_limit INTEGER NOT NULL DEFAULT 5000,
+    withdrawal_fee INTEGER NOT NULL DEFAULT 1,
+    PRIMARY KEY (accounts_limit_id),
     FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
 
-ALTER TABLE client_accounts_limit ADD card_limit INTEGER NOT NULL DEFAULT 5000;
+-- INSERT INTO accounts_limit (account_id, type_of_customer, type_of_account, credit_payment) VALUES (1, 'premium', 'credit', 'yearly');
 
-UPDATE client_accounts_limit
+UPDATE accounts_limit
 SET card_limit = 
 CASE WHEN type_of_account = 'debit' THEN 0 WHEN type_of_account = 'credit' AND type_of_customer = 'regular' THEN 5000 WHEN type_of_account = 'credit' AND type_of_customer = 'premium' THEN 20000 END;
 
-ALTER TABLE client_accounts_limit ADD withdrawal_fee INTEGER NOT NULL DEFAULT 1;
-
-UPDATE client_accounts_limit
+UPDATE accounts_limit
 SET withdrawal_fee = CASE WHEN type_of_customer = 'regular' THEN 1 WHEN type_of_customer = 'premium' THEN 0 END;
-
-CREATE TABLE accounts (
-    account_id SERIAL,
-    account_number VARCHAR(10) NOT NULL CHECK(account_number = '\d{3}-\d{3}-\d{2}'),
-    currency_name VARCHAR(50) NOT NULL,
-    currency_code VARCHAR(5) NOT NULL,
-    deposited_amount NUMERIC(20, 4) NOT NULL DEFAULT 0,
-    PRIMARY KEY (account_id)
-);

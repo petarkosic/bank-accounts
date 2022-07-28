@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from './../hooks/fetchClients';
-import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function Client() {
-    const [clientId, setClientId] = useState(1);
+    const { clientId } = useParams();
 
     const { data, error, isError, isLoading } = useQuery(['client', clientId], () => fetchClient(clientId));
 

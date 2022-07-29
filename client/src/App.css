@@ -1,38 +1,97 @@
-.App {
-  text-align: center;
+.container {
+	margin: 0;
+	padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header {
+	height: 80px;
+	display: flex;
+	align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.title {
+	margin: 0;
+	padding: 0 20px;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	background: black;
+	font-weight: normal;
+	border-radius: 8px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.title a {
+	color: white;
+	text-decoration: none;
 }
 
-.App-link {
-  color: #61dafb;
+.title:hover a {
+	cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.clients {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.clients-heading {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: white;
+	width: 100%;
+	border-radius: 8px;
+}
+
+.clients-heading p {
+	width: 100%;
+}
+
+.clients-heading div {
+	width: 100%;
+}
+
+.clients-client {
+	width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.clients-client a {
+	color: white;
+	text-decoration: none;
+}
+
+.clients-client:hover a {
+	cursor: pointer;
+}
+
+.client-name {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: white;
+	height: 100px;
+	padding: 10px 0;
+}
+
+.client-name:hover {
+	background: #444;
+}
+
+.client-name > * {
+	text-align: left;
+	width: 100%;
+}
+
+.client-name a {
+	height: 100%;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

@@ -4,7 +4,7 @@ export const getAllClients = async (req, res, next) => {
 
     try {
         let query = `
-        SELECT client_id, first_name, last_name, date_of_birth, list_of_accounts FROM clients;
+        SELECT clients.client_id, first_name, last_name, date_of_birth, list_of_accounts, type_of_customer, type_of_account, account_number, currency_name, currency_code, deposited_amount FROM clients LEFT JOIN client_address ON clients.client_id = client_address.client_id LEFT JOIN accounts ON accounts.client_id = clients.client_id LEFT JOIN accounts_limit ON accounts.account_id = accounts_limit.account_id;
         `;
 
         let clients = await pool.query(query);

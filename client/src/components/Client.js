@@ -1,8 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from './../hooks/fetchClients';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { EditAddressModal } from './EditAddressModal';
 
 function Client() {
+    const [openModal, setOpenModal] = useState(false);
+
     const { clientId } = useParams();
     const navigate = useNavigate();
 
@@ -36,6 +40,12 @@ function Client() {
                             <p>{client.postal_code}</p>
                             <p>{client.country_name}</p>
                             <p>({client.country_code})</p>
+                            <button onClick={() => setOpenModal(true)}>Change Address</button>
+                            {openModal &&
+                                <EditAddressModal
+                                    setOpenModal={setOpenModal}
+                                    data={data}
+                                />}
                         </div>
                     </div>
                     <div className="client-money">

@@ -9,3 +9,8 @@ export async function fetchClient(id) {
     const { data } = await api.get(`/clients/${id}`);
     return data.client;
 };
+
+export async function changeAddress(clientData) {
+    const { data } = await api.put(`/clients/change-address/${clientData.client_id}`, clientData);
+    return data;
+};

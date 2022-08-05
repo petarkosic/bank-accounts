@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { changeAddress } from '../hooks/fetchClients';
 
-// export const EditAddressModal = ({ setOpenModal, streetName, houseNumber, setStreetName, setHouseNumber }) => {
 export const EditAddressModal = ({ setOpenModal, data }) => {
     const [currentClientId, setCurrentClientId] = useState(data?.[0].client_id);
     const [streetName, setStreetName] = useState(data?.[0].street_name);
@@ -10,18 +10,22 @@ export const EditAddressModal = ({ setOpenModal, data }) => {
     const [postalCode, setPostalCode] = useState(data?.[0].postal_code);
     const [typeOfCustomer, setTypeOfCustomer] = useState(data?.[0].type_of_customer);
 
-    // const { data: changeAddressData, error, isError, isLoading } = useQuery(['client', currentClientId], () => changeAddress(currentClientId, {
-    //     currentClientId,
-    //     streetName,
-    //     houseNumber,
-    //     postalCode,
-    // }));
+    const navigate = useNavigate();
 
-    // const { data: changeAddressData, error, isError, isLoading, mutate } = useMutation(changeAddress, {
-    //     onSuccess: () => {
-    //         navigate(`/`)
-    //     }
-    // });
+    const { error, isError, isLoading, mutate } = useMutation(changeAddress);
+
+    const handleChangeAddress = () => {
+        const dataToSend = {
+            client_id: currentClientId,
+            street_name: streetName,
+            house_number: houseNumber,
+            postal_code: postalCode,
+        };
+
+        mutate(dataToSend);
+        setOpenModal(false);
+        navigate(0);
+    }
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -67,7 +71,7 @@ export const EditAddressModal = ({ setOpenModal, data }) => {
                         </div>
                         <div className='modal-actions'>
                             <div className='actions-container'>
-                                <button className='delete-btn' onClick={() => setOpenModal(false)}>
+                                <button className='delete-btn' onClick={handleChangeAddress}>
                                     Change
                                 </button>
                                 <button

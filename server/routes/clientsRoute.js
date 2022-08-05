@@ -5,6 +5,6 @@ const router = Router();
 
 router.get('/', getAllClients);
 router.get('/:id', getClient);
-router.post('/change-address/:id', changeAddress);
+router.put('/change-address/:id', changeAddress);
 
 export default router;

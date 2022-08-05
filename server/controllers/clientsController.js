@@ -36,22 +36,25 @@ export const getClient = async (req, res, next) => {
 };
 
 export const changeAddress = async (req, res, next) => {
-    const id = req.params.id;
+    const { client_id,
+        street_name,
+        house_number,
+        postal_code,
+    } = req.body;
 
     try {
         let query = `
         UPDATE client_address
-        SET street_name = 'BLABLABLA', house_number = '142', postal_code = '412'
-        FROM clients
-        WHERE clients.client_id = 2 AND client_address.client_id = clients.client_id;
+        SET street_name = $1, house_number = $2, postal_code = $3
+        WHERE client_address.client_id = $4;
         `;
 
-        // let client = await pool.query('SELECT * FROM clients WHERE client_id = $1', [id]);
+        let client = await pool.query(query, [street_name, house_number, postal_code, client_id]);
 
         res.status(200).json({
-            client: client.rows,
+            client: client.rows[0],
         });
     } catch (err) {
-        console.error(err.message);
+        console.error(err);
     }
 };

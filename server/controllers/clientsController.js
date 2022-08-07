@@ -58,3 +58,23 @@ export const changeAddress = async (req, res, next) => {
         console.error(err);
     }
 };
+
+export const switchAccount = async (req, res, next) => {
+    const { client_id, type_of_customer } = req.body;
+
+    try {
+        let query = `
+        UPDATE accounts_limit
+        SET type_of_customer = $1
+        WHERE accounts_limit.account_id = (SELECT account_id FROM accounts WHERE accounts.client_id = $2);
+        `;
+
+        let client = await pool.query(query, [type_of_customer, client_id]);
+
+        res.status(200).json({
+            client: client.rows[0],
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}

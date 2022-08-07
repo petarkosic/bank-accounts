@@ -8,7 +8,6 @@ export const EditAddressModal = ({ setOpenModal, data }) => {
     const [streetName, setStreetName] = useState(data?.[0].street_name);
     const [houseNumber, setHouseNumber] = useState(data?.[0].house_number);
     const [postalCode, setPostalCode] = useState(data?.[0].postal_code);
-    const [typeOfCustomer, setTypeOfCustomer] = useState(data?.[0].type_of_customer);
 
     const navigate = useNavigate();
 

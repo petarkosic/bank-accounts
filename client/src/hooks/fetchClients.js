@@ -14,3 +14,8 @@ export async function changeAddress(clientData) {
     const { data } = await api.put(`/clients/change-address/${clientData.client_id}`, clientData);
     return data;
 };
+
+export async function switchAccount(clientData) {
+    const { data } = await api.put(`/clients/switch-account/${clientData.client_id}`, clientData);
+    return data;
+};

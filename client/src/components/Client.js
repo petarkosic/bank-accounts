@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchClient } from './../hooks/fetchClients';
+import { useState, useRef } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { depositOrWithdraw, fetchClient } from './../hooks/fetchClients';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { EditAddressModal } from './EditAddressModal';
 import { SwitchCustomerModal } from './SwitchCustomerModal';
 
@@ -9,15 +9,41 @@ function Client() {
     const [openModal, setOpenModal] = useState(false);
     const [openCustomerModal, setOpenCustomerModal] = useState(false);
     const [typeOfCustomer, setTypeOfCustomer] = useState();
+    const [changeAmount, setChangeAmount] = useState(0);
 
     const { clientId } = useParams();
     const navigate = useNavigate();
+
+    const depositWithdrawButtonRef = useRef();
+
+    const depositWithdrawInputRef = useRef();
+    const depositWithdrawSubmitButton = useRef();
 
     const { data, error, isError, isLoading } = useQuery(['client', clientId], () => fetchClient(clientId), {
         onSuccess: (type) => {
             setTypeOfCustomer(type?.[0].type_of_customer)
         }
     });
+
+    const handleShowInput = e => {
+        depositWithdrawButtonRef.current.style.display = 'none'
+        depositWithdrawInputRef.current.style.display = 'block'
+        depositWithdrawSubmitButton.current.style.display = 'block'
+    }
+
+    const { mutate } = useMutation(depositOrWithdraw);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const dataToSend = {
+            client_id: clientId,
+            deposited_amount: Number(data?.[0].deposited_amount) + Number(changeAmount)
+        }
+
+        mutate(dataToSend);
+        navigate(0);
+    }
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -66,7 +92,32 @@ function Client() {
                     <div className="client-money">
                         <p>Card limit: {client.card_limit}</p>
                         <p>Credit payment: {client.credit_payment}</p>
-                        <p>Deposited amount: {client.deposited_amount.slice(0, -2)}</p>
+                        <div className="money-deposit">
+                            <p>Deposited amount: {client.deposited_amount.slice(0, -2)}</p>
+                            <button
+                                ref={depositWithdrawButtonRef}
+                                onClick={e => handleShowInput(e)}
+                            >
+                                Deposit or Withdraw
+                            </button>
+                            <div className="input-amount">
+                                <input
+                                    type="text"
+                                    ref={depositWithdrawInputRef}
+                                    onChange={e => setChangeAmount(e.target.value)}
+                                    style={{ display: 'none' }}
+                                    placeholder='Amount' />
+                                <button
+                                    type='submit'
+                                    ref={depositWithdrawSubmitButton}
+                                    style={{ display: 'none' }}
+                                    className="submit-button"
+                                    onClick={e => handleSubmit(e)}
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
                         <p>Currency name: {client.currency_name}</p>
                         <p>Currency code: {client.currency_code}</p>
                     </div>

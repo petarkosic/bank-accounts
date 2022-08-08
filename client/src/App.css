@@ -207,6 +207,10 @@
 	font-size: 1.25rem;
 }
 
+.button-switch:hover {
+	cursor: pointer;
+}
+
 .type {
 	width: 100%;
 	display: flex;
@@ -248,6 +252,60 @@
 
 .client-money p {
 	padding: 0 40px;
+}
+
+.money-deposit {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.money-deposit p {
+	margin-right: 50px;
+}
+
+.money-deposit button {
+	height: 70%;
+	width: 350px;
+	padding: 0 20px;
+	background: black;
+	color: white;
+	border-radius: 8px;
+	font-size: 1.25rem;
+}
+
+.money-deposit button:hover {
+	cursor: pointer;
+}
+
+.input-amount {
+	position: relative;
+}
+
+.money-deposit input {
+	width: 250px;
+	height: 70%;
+	margin: 0 auto;
+	padding: 0 20px;
+	border-radius: 8px;
+	background: #444;
+	color: white;
+	font-size: 1.5rem;
+}
+
+.money-deposit input::placeholder {
+	color: #ccc;
+}
+
+.money-deposit .submit-button {
+	position: absolute;
+	width: 100px;
+	height: 100%;
+	top: 0;
+	right: 0;
+	padding: 0;
+	border: none;
 }
 
 .modal-bg {

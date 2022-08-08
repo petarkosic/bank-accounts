@@ -19,3 +19,8 @@ export async function switchAccount(clientData) {
     const { data } = await api.put(`/clients/switch-account/${clientData.client_id}`, clientData);
     return data;
 };
+
+export async function depositOrWithdraw(clientData) {
+    const { data } = await api.put(`/clients/deposit/${clientData.client_id}`, clientData);
+    return data;
+};

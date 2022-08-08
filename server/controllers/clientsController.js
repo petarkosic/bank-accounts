@@ -78,3 +78,25 @@ export const switchAccount = async (req, res, next) => {
         console.error(err);
     }
 }
+
+export const depositOrWithdraw = async (req, res, next) => {
+    const { client_id, deposited_amount } = req.body;
+
+    try {
+        if (deposited_amount > 0) {
+            let query = `
+            UPDATE accounts
+            SET deposited_amount = $1
+            WHERE client_id = $2
+            `;
+
+            let client = await pool.query(query, [deposited_amount, client_id]);
+
+            res.status(200).json({
+                client: client.rows[0],
+            });
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}

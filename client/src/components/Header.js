@@ -8,7 +8,7 @@ const Header = () => {
             <h1 className='title'>
                 <Link to={'/'}>BA</Link>
             </h1>
-            {location.pathname === '/' ?
+            {location.pathname === '/' &&
                 <>
                     <input
                         type="text"
@@ -17,8 +17,6 @@ const Header = () => {
                     />
                     <button className="client-add">Add Client</button>
                 </>
-                :
-                <button className="client-edit">Edit info</button>
             }
         </div>
     )

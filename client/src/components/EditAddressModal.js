@@ -3,11 +3,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { changeAddress } from '../hooks/fetchClients';
 
-export const EditAddressModal = ({ setOpenModal, data }) => {
-    const [currentClientId, setCurrentClientId] = useState(data?.[0].client_id);
+export const EditAddressModal = ({ setOpenAddressModal, data }) => {
     const [streetName, setStreetName] = useState(data?.[0].street_name);
     const [houseNumber, setHouseNumber] = useState(data?.[0].house_number);
     const [postalCode, setPostalCode] = useState(data?.[0].postal_code);
+
+    const currentClientId = data?.[0].client_id;
 
     const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ export const EditAddressModal = ({ setOpenModal, data }) => {
         };
 
         mutate(dataToSend);
-        setOpenModal(false);
+        setOpenAddressModal(false);
         navigate(0);
     }
 
@@ -35,7 +36,7 @@ export const EditAddressModal = ({ setOpenModal, data }) => {
 
     return (
         <>
-            <div className='modal-bg' onClick={() => setOpenModal(false)} />
+            <div className='modal-bg' onClick={() => setOpenAddressModal(false)} />
             <div className='centered'>
                 <div className='modal'>
                     <div className="modal-top">
@@ -75,7 +76,7 @@ export const EditAddressModal = ({ setOpenModal, data }) => {
                                 </button>
                                 <button
                                     className='cancel-btn'
-                                    onClick={() => setOpenModal(false)}
+                                    onClick={() => setOpenAddressModal(false)}
                                 >
                                     Cancel
                                 </button>

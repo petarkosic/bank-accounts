@@ -4,10 +4,12 @@ import { depositOrWithdraw, fetchClient } from './../hooks/fetchClients';
 import { useParams, useNavigate } from 'react-router-dom';
 import { EditAddressModal } from './EditAddressModal';
 import { SwitchCustomerModal } from './SwitchCustomerModal';
+import { SendMoneyModal } from './SendMoneyModal';
 
 function Client() {
-    const [openModal, setOpenModal] = useState(false);
+    const [openAddressModal, setOpenAddressModal] = useState(false);
     const [openCustomerModal, setOpenCustomerModal] = useState(false);
+    const [openSendMoneyModal, setOpenSendMoneyModal] = useState(false);
     const [typeOfCustomer, setTypeOfCustomer] = useState();
     const [changeAmount, setChangeAmount] = useState(0);
 
@@ -54,7 +56,16 @@ function Client() {
 
     return (
         <div className='client'>
-            <button className="button-go-back" onClick={() => navigate(-1)}>Go Back</button>
+            <div className="buttons">
+                <button className="button-go-back" onClick={() => navigate(-1)}>Go Back</button>
+                <button className="button-send-money" onClick={() => setOpenSendMoneyModal(true)}>Send Money</button>
+                {openSendMoneyModal &&
+                    <SendMoneyModal
+                        data={data}
+                        setOpenSendMoneyModal={setOpenSendMoneyModal}
+                    />
+                }
+            </div>
             {data?.map(client => (
                 <div key={client.client_id} className='client-card'>
                     <div className='client-info'>
@@ -81,10 +92,10 @@ function Client() {
                             <p>{client.postal_code}</p>
                             <p>{client.country_name}</p>
                             <p>({client.country_code})</p>
-                            <button className="address-button" onClick={() => setOpenModal(true)}>Change Address</button>
-                            {openModal &&
+                            <button className="address-button" onClick={() => setOpenAddressModal(true)}>Change Address</button>
+                            {openAddressModal &&
                                 <EditAddressModal
-                                    setOpenModal={setOpenModal}
+                                    setOpenAddressModal={setOpenAddressModal}
                                     data={data}
                                 />}
                         </div>

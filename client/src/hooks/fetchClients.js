@@ -24,3 +24,8 @@ export async function depositOrWithdraw(clientData) {
     const { data } = await api.put(`/clients/deposit/${clientData.client_id}`, clientData);
     return data;
 };
+
+export async function searchByAccountNumber(accountNumber) {
+    const { data } = await api.get(`/clients/search?q=${accountNumber}`);
+    return data;
+};

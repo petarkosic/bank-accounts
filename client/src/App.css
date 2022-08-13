@@ -191,7 +191,7 @@
 	border-radius: 8px;
 }
 
-.client-fullname {
+/* .client-fullname {
 	position: relative;
 }
 
@@ -213,7 +213,7 @@
 	height: 10px;
 	background: aqua;
 	border-radius: 50%;
-}
+} */
 
 .account-number {
 	font-weight: bold;
@@ -410,6 +410,21 @@
 
 .to {
 	width: 50%;
+}
+
+.to label {
+	color: black;
+}
+
+.search {
+	width: 50%;
+	height: 30px;
+	margin: 0 auto;
+	padding: 0 20px;
+	border-radius: 8px;
+	background: #888;
+	color: white;
+	font-size: 1rem;
 }
 
 .modal-inputs {

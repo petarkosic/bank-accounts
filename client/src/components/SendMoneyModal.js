@@ -1,10 +1,28 @@
+import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { searchByAccountNumber } from '../hooks/fetchClients';
+import useDebounce from '../hooks/useDebounce';
 
 export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
-    const currentClientId = data?.[0].client_id;
+    const [searchInputText, setSearchInputText] = useState('');
+    const [UserByAccount, setUserByAccount] = useState();
 
+    const accountNumber = useDebounce(searchInputText, 1500);
+
+    // searchByAccountNumber(accountNumber);
+    const { data: userData, error, isError, isLoading } = useQuery(['account', accountNumber], () => searchByAccountNumber(accountNumber), {
+        onSuccess: (user) => {
+            setUserByAccount(user);
+        }
+    });
+
+    const currentClientId = data?.[0].client_id;
     const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        setSearchInputText(e.target.value);
+    }
 
     return (
         <>
@@ -29,7 +47,14 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
                                 </div>
                             </div>
                             <div className="to">
-                                <h1></h1>
+                                <label htmlFor="search-input">Search by account number</label>
+                                <input
+                                    type="text"
+                                    id='search-input'
+                                    className="search"
+                                    value={searchInputText}
+                                    onChange={handleChange}
+                                />
                             </div>
                         </div>
 

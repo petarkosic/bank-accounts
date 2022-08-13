@@ -100,3 +100,23 @@ export const depositOrWithdraw = async (req, res, next) => {
         console.error(err);
     }
 }
+
+export const searchByAccountNumber = async (req, res, next) => {
+    const { q } = req.query;
+
+    try {
+        let query = `
+            SELECT *
+            FROM accounts
+            WHERE account_number = $1
+            `;
+
+        let client = await pool.query(query, [q]);
+
+        res.status(200).json({
+            client: client.rows[0],
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}

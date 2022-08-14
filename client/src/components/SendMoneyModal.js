@@ -1,12 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { searchByAccountNumber } from '../hooks/fetchClients';
+import { searchByAccountNumber, sendMoney } from '../hooks/fetchClients';
 import useDebounce from '../hooks/useDebounce';
 
 export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const [searchInputText, setSearchInputText] = useState('');
-    const [UserByAccount, setUserByAccount] = useState();
+    const [userByAccount, setUserByAccount] = useState();
+    const [amountOfMoney, setAmountOfMoney] = useState(0);
 
     const accountNumber = useDebounce(searchInputText, 1500);
 
@@ -22,6 +23,17 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
 
     const handleChange = (e) => {
         setSearchInputText(e.target.value);
+    }
+
+    const handleMoneyAmountChange = (e) => {
+        setAmountOfMoney(e.target.value);
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (isError) {
+        return <div>Error! {error}</div>;
     }
 
     return (
@@ -55,9 +67,33 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
                                     value={searchInputText}
                                     onChange={handleChange}
                                 />
+                                <div className="modal-inputs">
+                                    {userByAccount?.client && (
+                                        <>
+                                            <span className='label'>Name</span>
+                                            <p className='value'>{userByAccount?.client?.first_name}{' '}{userByAccount?.client?.last_name}</p>
+                                            <span className='label'>Account Number</span>
+                                            <p className='value'>{userByAccount?.client?.account_number}</p>
+                                            <span className='label'>Deposited Amount</span>
+                                            <p className='value'>{userByAccount?.client?.deposited_amount.slice(0, -2)}</p>
+                                            <span className='label'>Currency Code</span>
+                                            <p className='value'>{userByAccount?.client?.currency_code}</p>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
+                    </div>
+                    <div className='money-input'>
+                        <label htmlFor="send-money">Send Money</label>
+                        <input
+                            type="text"
+                            id='send-money'
+                            className="search"
+                            value={amountOfMoney}
+                            onChange={handleMoneyAmountChange}
+                        />
                     </div>
                     <div className="modal-bottom">
                         <div className='modal-content'>
@@ -65,8 +101,10 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
                         </div>
                         <div className='modal-actions'>
                             <div className='actions-container'>
-                                <button className='delete-btn' >
-                                    Change
+                                <button
+                                    className='delete-btn'
+                                >
+                                    Send
                                 </button>
                                 <button
                                     className='cancel-btn'

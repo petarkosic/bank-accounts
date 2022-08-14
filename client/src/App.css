@@ -361,7 +361,7 @@
 
 .modal-money {
 	width: 750px;
-	height: 500px;
+	height: 600px;
 	background: white;
 	color: white;
 	z-index: 10;
@@ -398,6 +398,7 @@
 .from {
 	width: 50%;
 	height: 300px;
+	padding-top: 55px;
 }
 
 .label {
@@ -429,7 +430,7 @@
 
 .modal-inputs {
 	width: 100%;
-	height: 200px;
+	height: 250px;
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
@@ -463,6 +464,18 @@
 	background: #ddd;
 	color: black;
 	font-size: 1.5rem;
+}
+
+.money-input {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.money-input label {
+	color: black;
 }
 
 .modal-bottom {

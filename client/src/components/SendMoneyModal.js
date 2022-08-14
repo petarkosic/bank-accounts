@@ -21,6 +21,21 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const currentClientId = data?.[0].client_id;
     const navigate = useNavigate();
 
+    const { mutate } = useMutation(sendMoney);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const dataToSend = {
+            from: currentClientId,
+            to: userByAccount?.client?.client_id,
+            amount: amountOfMoney,
+        }
+
+        mutate(dataToSend);
+        navigate(0);
+    }
+
     const handleChange = (e) => {
         setSearchInputText(e.target.value);
     }
@@ -103,6 +118,7 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
                             <div className='actions-container'>
                                 <button
                                     className='delete-btn'
+                                    onClick={(e) => handleSubmit(e)}
                                 >
                                     Send
                                 </button>

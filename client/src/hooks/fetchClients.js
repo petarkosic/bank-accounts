@@ -29,3 +29,8 @@ export async function searchByAccountNumber(accountNumber) {
     const { data } = await api.get(`/clients/search?q=${Number(accountNumber)}`);
     return data;
 };
+
+export async function sendMoney(moneyData) {
+    const { data } = await api.post(`/clients/send-money`, moneyData);
+    return data;
+};

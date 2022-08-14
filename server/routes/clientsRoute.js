@@ -3,9 +3,9 @@ import { getAllClients, getClient, changeAddress, switchAccount, depositOrWithdr
 
 const router = Router();
 
+router.get('/search', searchByAccountNumber);
 router.get('/', getAllClients);
 router.get('/:id', getClient);
-router.get('/search', searchByAccountNumber);
 router.put('/change-address/:id', changeAddress);
 router.put('/switch-account/:id', switchAccount);
 router.put('/deposit/:id', depositOrWithdraw);

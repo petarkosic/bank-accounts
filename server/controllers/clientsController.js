@@ -1,4 +1,5 @@
 import pool from './../db/db.js'
+import { parseNumber } from '../utils/index.js';
 
 export const getAllClients = async (req, res, next) => {
 
@@ -104,14 +105,14 @@ export const depositOrWithdraw = async (req, res, next) => {
 export const searchByAccountNumber = async (req, res, next) => {
     const { q } = req.query;
 
+    let accountNumber = parseNumber(q)
+
     try {
         let query = `
-            SELECT *
-            FROM accounts
-            WHERE account_number = $1
-            `;
+        SELECT clients.client_id, first_name, last_name, accounts.account_id, account_number, currency_name, currency_code, deposited_amount FROM clients LEFT JOIN accounts ON accounts.client_id = clients.client_id WHERE accounts.account_number = $1;
+        `
 
-        let client = await pool.query(query, [q]);
+        let client = await pool.query(query, [accountNumber]);
 
         res.status(200).json({
             client: client.rows[0],

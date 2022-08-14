@@ -121,3 +121,42 @@ export const searchByAccountNumber = async (req, res, next) => {
         console.error(err);
     }
 }
+
+export const sendMoney = async (req, res, next) => {
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        const { from, to, amount } = req.body;
+
+        let fromQuery = `
+        UPDATE accounts
+        SET deposited_amount = deposited_amount - $1
+        WHERE client_id = $2;
+        `;
+
+        let clientFromQuery = await client.query(fromQuery, [Number(amount), from]);
+
+        let toQuery = `
+        UPDATE accounts
+        SET deposited_amount = deposited_amount + $1
+        WHERE client_id = $2;
+        `;
+
+        let clientToQuery = await client.query(toQuery, [Number(amount), to]);
+
+        await client.query('COMMIT');
+
+        res.status(200).json({
+            success: true,
+            message: 'Accounts Updated',
+        });
+    } catch (err) {
+        await client.query('ROLLBACK');
+
+        console.error(err);
+    } finally {
+        client.release();
+    }
+}

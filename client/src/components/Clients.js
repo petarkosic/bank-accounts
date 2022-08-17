@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { fetchClients } from './../hooks/fetchClients';
+import { motion } from 'framer-motion';
 
 function Clients() {
     const { data, error, isError, isLoading } = useQuery(['clients'], fetchClients);
@@ -25,7 +26,14 @@ function Clients() {
                 <div></div>
             </div>
             {data?.map(client => (
-                <div key={client.client_id} className='clients-client'>
+                <motion.div
+                    key={client.client_id}
+                    className='clients-client'
+                    initial={{ opacity: 0, scaleY: 0 }}
+                    animate={{ opacity: 1, scaleY: 1 }}
+                    exit={{ opacity: 0, scaleY: 0 }}
+                    transition={{ duration: .1 }}
+                >
                     <div className='client-name'>
                         <div className="client-fullname">
                             <h1>{client.first_name}</h1>
@@ -39,7 +47,7 @@ function Clients() {
                         <p>{client.currency_code}</p>
                         <Link className="button-view-more" to={`/${client.client_id}`}>View More</Link>
                     </div>
-                </div>
+                </motion.div>
             ))
             }
         </div>

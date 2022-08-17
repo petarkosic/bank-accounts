@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { searchByAccountNumber, sendMoney } from '../hooks/fetchClients';
 import useDebounce from '../hooks/useDebounce';
+import { motion } from 'framer-motion';
 
 export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const [searchInputText, setSearchInputText] = useState('');
@@ -55,7 +56,12 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
         <>
             <div className='modal-bg' onClick={() => setOpenSendMoneyModal(false)} />
             <div className='centered'>
-                <div className='modal-money'>
+                <motion.div
+                    className='modal-money'
+                    initial={{ opacity: 0, scaleY: 0, x: 300 }}
+                    animate={{ opacity: 1, scaleY: 1, x: 0 }}
+                    exit={{ opacity: 0, scaleY: 0 }}
+                >
                     <div className="modal-top">
                         <div className='modal-header'>
                             <h5 className='heading'>Send Money</h5>
@@ -131,7 +137,7 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </>
     );

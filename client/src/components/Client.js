@@ -5,6 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { EditAddressModal } from './EditAddressModal';
 import { SwitchCustomerModal } from './SwitchCustomerModal';
 import { SendMoneyModal } from './SendMoneyModal';
+import { motion } from 'framer-motion';
 
 function Client() {
     const [openAddressModal, setOpenAddressModal] = useState(false);
@@ -67,7 +68,14 @@ function Client() {
                 }
             </div>
             {data?.map(client => (
-                <div key={client.client_id} className='client-card'>
+                <motion.div
+                    key={client.client_id}
+                    className='client-card'
+                    initial={{ opacity: 0, scaleY: 0 }}
+                    animate={{ opacity: 1, scaleY: 1 }}
+                    exit={{ opacity: 0, scaleY: 0 }}
+                    transition={{ duration: .1 }}
+                >
                     <div className='client-info'>
                         <div className="client-fullname">
                             <h1>{client.first_name}{' '}{client.last_name}</h1>
@@ -132,7 +140,7 @@ function Client() {
                         <p>Currency name: {client.currency_name}</p>
                         <p>Currency code: {client.currency_code}</p>
                     </div>
-                </div>
+                </motion.div>
             ))
             }
         </div>

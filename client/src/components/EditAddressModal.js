@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { changeAddress } from '../hooks/fetchClients';
+import { motion } from 'framer-motion';
 
 export const EditAddressModal = ({ setOpenAddressModal, data }) => {
     const [streetName, setStreetName] = useState(data?.[0].street_name);
@@ -38,7 +39,12 @@ export const EditAddressModal = ({ setOpenAddressModal, data }) => {
         <>
             <div className='modal-bg' onClick={() => setOpenAddressModal(false)} />
             <div className='centered'>
-                <div className='modal'>
+                <motion.div
+                    className='modal'
+                    initial={{ opacity: 0, scaleY: 0, x: -100 }}
+                    animate={{ opacity: 1, scaleY: 1, x: 0 }}
+                    exit={{ opacity: 0, scaleY: 0 }}
+                >
                     <div className="modal-top">
                         <div className='modal-header'>
                             <h5 className='heading'>Change Address</h5>
@@ -83,7 +89,7 @@ export const EditAddressModal = ({ setOpenAddressModal, data }) => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </>
     );

@@ -5,10 +5,14 @@ import { searchByAccountNumber, sendMoney } from '../hooks/fetchClients';
 import useDebounce from '../hooks/useDebounce';
 import { motion } from 'framer-motion';
 
+const FEE = 0.01;
+
 export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const [searchInputText, setSearchInputText] = useState('');
     const [userByAccount, setUserByAccount] = useState();
     const [amountOfMoney, setAmountOfMoney] = useState(0);
+    const [fundsError, setFundsError] = useState(false);
+    const [currencyCodeError, setCurrencyCodeError] = useState(false);
 
     const accountNumber = useDebounce(searchInputText, 1500);
 
@@ -27,14 +31,31 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (data?.[0].deposited_amount < amountOfMoney) {
+            setFundsError(true);
+            setTimeout(() => {
+                setFundsError(false);
+            }, 3000);
+            return;
+        }
+
+        if (data?.[0].currency_code !== userData?.client?.currency_code) {
+            setCurrencyCodeError(true);
+            setTimeout(() => {
+                setCurrencyCodeError(false);
+            }, 3000);
+            return;
+        }
+
         const dataToSend = {
             from: currentClientId,
             to: userByAccount?.client?.client_id,
-            amount: amountOfMoney,
+            amount: amountOfMoney > 10000 ? String(Number(amountOfMoney) + (Number(amountOfMoney) * FEE)) : amountOfMoney,
         }
-
-        mutate(dataToSend);
-        navigate(0);
+        if (!fundsError) {
+            mutate(dataToSend);
+            navigate(0);
+        }
     }
 
     const handleChange = (e) => {
@@ -115,6 +136,12 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
                             value={amountOfMoney}
                             onChange={handleMoneyAmountChange}
                         />
+                        {fundsError && (
+                            <p className='funds-error'>Insufficent Funds</p>
+                        )}
+                        {currencyCodeError && (
+                            <p className='funds-error'>Currencies Do Not Match</p>
+                        )}
                     </div>
                     <div className="modal-bottom">
                         <div className='modal-content'>

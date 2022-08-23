@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { getAllClients, getClient, changeAddress, switchAccount, depositOrWithdraw, searchByAccountNumber, sendMoney } from './../controllers/clientsController.js';
+import { getAllClients, getClient, changeAddress, switchAccount, depositOrWithdraw, searchByAccountNumber, sendMoney, updateCardLimitAndWithdrawalFee } from './../controllers/clientsController.js';
 
 const router = Router();
 
 router.get('/search', searchByAccountNumber);
+router.get('/update-limit', updateCardLimitAndWithdrawalFee);
 router.get('/', getAllClients);
 router.get('/:id', getClient);
 router.put('/change-address/:id', changeAddress);

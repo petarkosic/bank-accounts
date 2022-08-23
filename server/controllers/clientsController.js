@@ -160,3 +160,39 @@ export const sendMoney = async (req, res, next) => {
         client.release();
     }
 }
+
+export const updateCardLimitAndWithdrawalFee = async (req, res, next) => {
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        let updateCardLimit = `
+        UPDATE accounts_limit
+        SET card_limit = 
+        CASE WHEN type_of_account = 'debit' THEN 0 WHEN type_of_account = 'credit' AND type_of_customer = 'regular' THEN 5000 WHEN type_of_account = 'credit' AND type_of_customer = 'premium' THEN 20000 END;
+        `;
+
+        let clientFromQuery = await client.query(updateCardLimit);
+
+        let updateWithdrawalFee = `
+        UPDATE accounts_limit
+        SET withdrawal_fee = CASE WHEN type_of_customer = 'regular' THEN 1 WHEN type_of_customer = 'premium' THEN 0 END;
+        `;
+
+        let clientToQuery = await client.query(updateWithdrawalFee);
+
+        await client.query('COMMIT');
+
+        res.status(200).json({
+            success: true,
+            message: 'Card Limit and Withdrawal Fee Updated',
+        });
+    } catch (err) {
+        await client.query('ROLLBACK');
+
+        console.error(err);
+    } finally {
+        client.release();
+    }
+}

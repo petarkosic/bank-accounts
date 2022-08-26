@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllClients, getClient, changeAddress, switchAccount, depositOrWithdraw, searchByAccountNumber, sendMoney, updateCardLimitAndWithdrawalFee } from './../controllers/clientsController.js';
+import { getAllClients, getClient, changeAddress, switchAccount, depositOrWithdraw, searchByAccountNumber, sendMoney, updateCardLimitAndWithdrawalFee, createClient } from './../controllers/clientsController.js';
 
 const router = Router();
 
@@ -11,5 +11,6 @@ router.put('/change-address/:id', changeAddress);
 router.put('/switch-account/:id', switchAccount);
 router.put('/deposit/:id', depositOrWithdraw);
 router.post('/send-money', sendMoney);
+router.post('/create-client', createClient);
 
 export default router;

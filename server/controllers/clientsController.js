@@ -196,3 +196,28 @@ export const updateCardLimitAndWithdrawalFee = async (req, res, next) => {
         client.release();
     }
 }
+
+export const createClient = async (req, res, next) => {
+    // const client = await pool.connect();
+
+    const { first_name, last_name, date_of_birth, type_of_customer, type_of_account, account_number, currency_name, currency_code, deposited_amount } = req.body;
+
+    try {
+        await client.query('BEGIN');
+
+
+
+        await client.query('COMMIT');
+
+        res.status(200).json({
+            success: true,
+            message: 'User Created',
+        });
+    } catch (err) {
+        await client.query('ROLLBACK');
+
+        console.error(err);
+    } finally {
+        client.release();
+    }
+}

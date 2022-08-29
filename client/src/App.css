@@ -34,6 +34,52 @@
 	color: white;
 	border-radius: 8px;
 	font-size: 1.25rem;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.header .client-add:hover {
+	cursor: pointer;
+}
+
+.create-client {
+	margin-top: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.create-client-left {
+	width: 50%;
+}
+
+.create-client-right {
+	width: 50%;
+}
+
+.create-client-inputs {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.create-client label {
+	color: white;
+	padding: 0 0px;
+	margin: 10px 0 5px;
+}
+
+.create-client input {
+	height: 40px;
+	padding: 0 20px;
+	border: none;
+	background: #ddd;
+	color: black;
+	font-size: 1.5rem;
 }
 
 .header .client-edit {

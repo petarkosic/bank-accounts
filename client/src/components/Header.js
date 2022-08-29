@@ -15,7 +15,7 @@ const Header = () => {
                         placeholder="Search by account number"
                         className="search"
                     />
-                    <button className="client-add">Add Client</button>
+                    <Link className="client-add" to={'/create-client'}>Add Client</Link>
                 </>
             }
         </div>

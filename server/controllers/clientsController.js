@@ -200,7 +200,21 @@ export const updateCardLimitAndWithdrawalFee = async (req, res, next) => {
 export const createClient = async (req, res, next) => {
     // const client = await pool.connect();
 
-    const { first_name, last_name, date_of_birth, type_of_customer, type_of_account, account_number, currency_name, currency_code, deposited_amount } = req.body;
+    const { first_name,
+        last_name,
+        date_of_birth,
+        country_name,
+        country_code,
+        strret_name,
+        house_number,
+        postal_code,
+        account_number,
+        currency_name,
+        currency_code,
+        deposited_amount,
+        type_of_customer,
+        type_of_account,
+        credit_payment } = req.body;
 
     try {
         await client.query('BEGIN');

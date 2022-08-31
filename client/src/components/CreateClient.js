@@ -1,6 +1,31 @@
-
+import { useState } from 'react';
 
 const CreateClient = () => {
+    const [data, setData] = useState({
+        first_name: '',
+        last_name: '',
+        date_of_birth: '',
+        country_name: '',
+        country_code: '',
+        strret_name: '',
+        house_number: '',
+        postal_code: '',
+        account_number: '',
+        currency_name: '',
+        currency_code: '',
+        deposited_amount: '',
+        type_of_customer: '',
+        type_of_account: '',
+        credit_payment: '',
+    });
+
+    const handleChange = e => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value,
+        })
+    }
+
     return (
         <>
             <div className="create-client">
@@ -8,21 +33,21 @@ const CreateClient = () => {
                     <div className="column">
                         <div className="create-client-inputs">
                             <label htmlFor="first-name" className='label'>First name</label>
-                            <input type="text" id="first-name" />
+                            <input type="text" name='first_name' id="first-name" onChange={handleChange} />
                             <label htmlFor="last-name" className='label'>Last name</label>
-                            <input type="text" id="last-name" />
+                            <input type="text" name='last_name' id="last-name" onChange={handleChange} />
                             <label htmlFor="date-of-birth" className='label'>Date of birth</label>
-                            <input type="text" id="date-of-birth" />
+                            <input type="text" name='date_of_birth' id="date-of-birth" onChange={handleChange} />
                             <label htmlFor="country-name" className='label'>Country name</label>
-                            <input type="text" id="country-name" />
+                            <input type="text" name='country_name' id="country-name" onChange={handleChange} />
                             <label htmlFor="country-code" className='label'>Country code</label>
-                            <input type="text" id="country-code" />
+                            <input type="text" name='country_code' id="country-code" onChange={handleChange} />
                             <label htmlFor="street-name" className='label'>Street name</label>
-                            <input type="text" id="street-name" />
+                            <input type="text" name='street_name' id="street-name" onChange={handleChange} />
                             <label htmlFor="house-number" className='label'>House number</label>
-                            <input type="text" id="house-number" />
+                            <input type="text" name='house_number' id="house-number" onChange={handleChange} />
                             <label htmlFor="postal-code" className='label'>Postal code</label>
-                            <input type="text" id="postal-code" />
+                            <input type="text" name='postal_code' id="postal-code" onChange={handleChange} />
                         </div>
                     </div>
                 </div>
@@ -30,19 +55,19 @@ const CreateClient = () => {
                     <div className="column">
                         <div className="create-client-inputs">
                             <label htmlFor="account-number" className='label'>Account number</label>
-                            <input type="text" id="account-number" />
+                            <input type="text" name='account_number' id="account-number" onChange={handleChange} />
                             <label htmlFor="currency-name" className='label'>Currency name</label>
-                            <input type="text" id="currency-name" />
+                            <input type="text" name='currency_name' id="currency-name" onChange={handleChange} />
                             <label htmlFor="currency-code" className='label'>Currency code</label>
-                            <input type="text" id="currency-code" />
+                            <input type="text" name='currency_code' id="currency-code" onChange={handleChange} />
                             <label htmlFor="deposited-amount" className='label'>Deposited amount</label>
-                            <input type="text" id="deposited-amount" />
+                            <input type="text" name='deposited_amount' id="deposited-amount" onChange={handleChange} />
                             <label htmlFor="type-of-customer" className='label'>Type of customer</label>
-                            <input type="text" id="type-of-customer" />
+                            <input type="text" name='type_of_customer' id="type-of-customer" onChange={handleChange} />
                             <label htmlFor="type-of-account" className='label'>Type of account</label>
-                            <input type="text" id="type-of-account" />
+                            <input type="text" name='type_of_account' id="type-of-account" onChange={handleChange} />
                             <label htmlFor="credit-payment" className='label'>Credit payment</label>
-                            <input type="text" id="credit-payment" />
+                            <input type="text" name='credit_payment' id="credit-payment" onChange={handleChange} />
                         </div>
                     </div>
                 </div>

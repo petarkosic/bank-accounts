@@ -34,3 +34,8 @@ export async function sendMoney(moneyData) {
     const { data } = await api.post(`/clients/send-money`, moneyData);
     return data;
 };
+
+export async function createClient(clientData) {
+    const { data } = await api.post(`/clients/create-client`, clientData);
+    return data;
+};

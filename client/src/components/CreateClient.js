@@ -1,4 +1,7 @@
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createClient } from '../hooks/fetchClients';
 
 const CreateClient = () => {
     const [data, setData] = useState({
@@ -7,7 +10,7 @@ const CreateClient = () => {
         date_of_birth: '',
         country_name: '',
         country_code: '',
-        strret_name: '',
+        street_name: '',
         house_number: '',
         postal_code: '',
         account_number: '',
@@ -19,11 +22,21 @@ const CreateClient = () => {
         credit_payment: '',
     });
 
+    const navigate = useNavigate();
+
+    const { mutate } = useMutation(createClient);
+
     const handleChange = e => {
         setData({
             ...data,
             [e.target.name]: e.target.value,
         })
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        mutate(data);
+        navigate(-1);
     }
 
     return (
@@ -72,6 +85,7 @@ const CreateClient = () => {
                     </div>
                 </div>
             </div>
+            <button onClick={handleSubmit}>Create Client</button>
         </>
     )
 }

@@ -42,7 +42,7 @@ function Clients() {
                         <p>{client.account_number}</p>
                         <p>{client.type_of_account}</p>
                         <p>{client.type_of_customer}</p>
-                        <p>{client.deposited_amount.slice(0, -2)}</p>
+                        <p>{client.deposited_amount?.slice(0, -2)}</p>
                         <p>{client.currency_name}</p>
                         <p>{client.currency_code}</p>
                         <Link className="button-view-more" to={`/${client.client_id}`}>View More</Link>

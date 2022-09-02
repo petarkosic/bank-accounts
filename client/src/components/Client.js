@@ -112,7 +112,7 @@ function Client() {
                         <p>Card limit: {client.card_limit}</p>
                         <p>Credit payment: {client.credit_payment}</p>
                         <div className="money-deposit">
-                            <p>Deposited amount: {client.deposited_amount.slice(0, -2)}</p>
+                            <p>Deposited amount: {client.deposited_amount?.slice(0, -2)}</p>
                             <button
                                 ref={depositWithdrawButtonRef}
                                 onClick={e => handleShowInput(e)}

@@ -198,14 +198,14 @@ export const updateCardLimitAndWithdrawalFee = async (req, res, next) => {
 }
 
 export const createClient = async (req, res, next) => {
-    // const client = await pool.connect();
+    const client = await pool.connect();
 
     const { first_name,
         last_name,
         date_of_birth,
         country_name,
         country_code,
-        strret_name,
+        street_name,
         house_number,
         postal_code,
         account_number,
@@ -216,9 +216,51 @@ export const createClient = async (req, res, next) => {
         type_of_account,
         credit_payment } = req.body;
 
+    let card_limit;
+    let withdrawal_fee;
+
+    if (type_of_account == 'debit') {
+        card_limit = 0;
+    } else if (type_of_account == 'credit' && type_of_customer == 'premium') {
+        card_limit = 20000;
+    } else {
+        card_limit = 5000;
+    }
+
+    if (type_of_customer == 'premium') {
+        withdrawal_fee = 0;
+    } else {
+        withdrawal_fee = 1;
+    }
+
     try {
         await client.query('BEGIN');
 
+        let createClientQuery = `
+        INSERT INTO clients (first_name, last_name, date_of_birth) VALUES ($1, $2, $3)
+        RETURNING client_id;
+        `;
+        let createClientDbCall = await client.query(createClientQuery, [first_name, last_name, date_of_birth]);
+
+        let client_id = createClientDbCall?.rows[0]?.client_id;
+
+        let createClientAddressQuery = `
+        INSERT INTO client_address (client_id, country_name, country_code, street_name, house_number, postal_code) VALUES ($1, $2, $3, $4, $5, $6);
+        `;
+        let createClientAddressDbCall = await client.query(createClientAddressQuery, [client_id, country_name, country_code, street_name, house_number, postal_code]);
+
+        let createAccountsQuery = `
+        INSERT INTO accounts (client_id, account_number, currency_name, currency_code, deposited_amount) VALUES ($1, $2, $3, $4, $5)
+        RETURNING account_id;
+        `;
+        let createAccountsDbCall = await client.query(createAccountsQuery, [client_id, account_number, currency_name, currency_code, deposited_amount]);
+
+        let account_id = createAccountsDbCall?.rows[0].account_id;
+
+        let createAccountsLimitQuery = `
+        INSERT INTO accounts_limit (account_id, type_of_customer, type_of_account, credit_payment, card_limit, withdrawal_fee) VALUES ($1, $2, $3, $4, $5, $6);
+        `;
+        let createAccountsLimitDbCall = await client.query(createAccountsLimitQuery, [account_id, type_of_customer, type_of_account, credit_payment, card_limit, withdrawal_fee]);
 
 
         await client.query('COMMIT');

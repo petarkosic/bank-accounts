@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
+import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
     const location = useLocation();
@@ -10,11 +11,7 @@ const Header = () => {
             </h1>
             {location.pathname === '/' &&
                 <>
-                    <input
-                        type="text"
-                        placeholder="Search by account number"
-                        className="search"
-                    />
+                    <HeaderSearch />
                     <Link className="client-add" to={'/create-client'}>Add Client</Link>
                 </>
             }

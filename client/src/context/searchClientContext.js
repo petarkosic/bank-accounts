@@ -1,20 +1,18 @@
 import { createContext, useContext, useReducer, useState } from "react";
-import clientReducer from './searchClientReducer';
+import clientReducer from './SearchClientReducer';
 import { searchByAccountNumber } from "../hooks/fetchClients";
 import { useQuery } from "@tanstack/react-query";
-
 
 const ClientContext = createContext();
 
 export const useSearchClientContext = () => useContext(ClientContext);
 
-const initialState = {
-    user: {},
-    error: {},
-    loading: false,
-};
-
 const SearchClientContext = ({ children }) => {
+    const initialState = {
+        user: {},
+        error: {},
+        loading: false,
+    };
 
     const [state, dispatch] = useReducer(clientReducer, initialState);
 
@@ -23,15 +21,15 @@ const SearchClientContext = ({ children }) => {
             dispatch({
                 type: 'SET_LOADING',
             });
-            // let res = await axios.get('http://localhost:5000/login');
-            const { data: userData, error, isError, isLoading } = useQuery(['account', accNumber], () => searchByAccountNumber(accNumber), {
-                onSuccess: (user) => {
-                    // setUserByAccount(user);
-                    dispatch({
-                        type: 'SET_USER',
-                        payload: user,
-                    })
-                }
+            const userData = await searchByAccountNumber(accNumber);
+
+            dispatch({
+                type: 'SET_USER',
+                payload: userData,
+            })
+
+            dispatch({
+                type: 'SET_LOADING',
             });
         } catch (err) {
             setError(err.response.data);

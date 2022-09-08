@@ -143,6 +143,13 @@
 	overflow: hidden;
 }
 
+.clients-client-bg {
+	width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #111;
+}
+
 .clients-client a {
 	color: white;
 	text-decoration: none;

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useSearchClientContext } from "../context/searchClientContext";
+import { useEffect, useState } from "react";
+import { useSearchClientContext } from "../context/SearchClientContext";
 import useDebounce from "../hooks/useDebounce";
 
 const HeaderSearch = () => {
@@ -7,17 +7,19 @@ const HeaderSearch = () => {
 
     const debounceSearchQuery = useDebounce(inputText, 1500);
 
-    const [search] = useSearchClientContext();
+    const { search } = useSearchClientContext();
 
-    // const { data: userData, error, isError, isLoading } = useQuery(['account', accountNumber], () => searchByAccountNumber(accountNumber), {
-    //     onSuccess: (user) => {
-    //         setUserByAccount(user);
-    //     }
-    // });
-    search(debounceSearchQuery);
+    useEffect(() => {
+        search(debounceSearchQuery);
+    }, [debounceSearchQuery]);
+
 
     const handleChange = e => {
         setInputText(e.target.value);
+    }
+
+    const handleSubmit = e => {
+        search(debounceSearchQuery);
     }
 
     return (
@@ -27,6 +29,7 @@ const HeaderSearch = () => {
             className="search"
             value={inputText}
             onChange={handleChange}
+            onSubmit={handleSubmit}
         />
     )
 }

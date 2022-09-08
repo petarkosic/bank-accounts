@@ -109,7 +109,7 @@ export const searchByAccountNumber = async (req, res, next) => {
 
     try {
         let query = `
-        SELECT clients.client_id, first_name, last_name, accounts.account_id, account_number, currency_name, currency_code, deposited_amount FROM clients LEFT JOIN accounts ON accounts.client_id = clients.client_id WHERE accounts.account_number = $1;
+        SELECT clients.client_id, first_name, last_name, accounts.account_id, account_number, currency_name, currency_code, deposited_amount, type_of_customer, type_of_account FROM clients LEFT JOIN accounts ON accounts.client_id = clients.client_id LEFT JOIN accounts_limit ON accounts.account_id = accounts_limit.account_id WHERE accounts.account_number = $1;
         `
 
         let client = await pool.query(query, [accountNumber]);

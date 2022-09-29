@@ -9,8 +9,12 @@ const Header = () => {
             <h1 className='title'>
                 <Link to={'/'}>BA</Link>
             </h1>
+
             {location.pathname === '/' &&
                 <>
+                    <div className="dashboard-link">
+                        <Link to={'/dashboard'}>View Dashboard</Link>
+                    </div>
                     <HeaderSearch />
                     <Link className="client-add" to={'/create-client'}>Add Client</Link>
                 </>

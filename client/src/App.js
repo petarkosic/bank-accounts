@@ -1,10 +1,11 @@
 import './App.css';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Clients from './components/Clients';
 import Client from './components/Client';
 import Header from './components/Header';
-import { AnimatePresence } from 'framer-motion';
 import CreateClient from './components/CreateClient';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function App() {
             <Route path='/' element={<Clients />} />
             <Route path='/:clientId' element={<Client />} />
             <Route path='/create-client' element={<CreateClient />} />
+            <Route path='/dashboard' element={<Dashboard />} />
           </Routes>
         </AnimatePresence>
       </div>

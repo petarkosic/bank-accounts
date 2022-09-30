@@ -111,6 +111,28 @@
 	cursor: pointer;
 }
 
+.dashboard-link {
+	width: 150px;
+	height: 100%;
+	margin-left: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dashboard-link a {
+	color: #ddd;
+	text-decoration: none;
+	font-size: 1.125rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+
+.dashboard-link a:hover {
+	color: white;
+}
+
 .clients {
 	margin-top: 20px;
 	display: flex;

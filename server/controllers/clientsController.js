@@ -277,3 +277,19 @@ export const createClient = async (req, res, next) => {
         client.release();
     }
 }
+
+export const showPremiumCustomersByCountry = async (req, res, next) => {
+    try {
+        let query = `
+        
+        `;
+
+        let client = await pool.query(query);
+
+        res.status(200).json({
+            client: client.rows,
+        });
+    } catch (err) {
+        console.error(err.message);
+    }
+};

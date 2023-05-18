@@ -40,7 +40,10 @@ const CreateClient = () => {
     }
 
     return (
-        <>
+        <div className="create--client--wrapper">
+            <div className="buttons">
+                <button className="button-go-back" onClick={() => navigate(-1)}>Go Back</button>
+            </div>
             <div className="create-client">
                 <div className="create-client-left">
                     <div className="column">
@@ -86,7 +89,7 @@ const CreateClient = () => {
                 </div>
             </div>
             <button onClick={handleSubmit}>Create Client</button>
-        </>
+        </div>
     )
 }
 

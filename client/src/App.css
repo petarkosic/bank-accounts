@@ -44,6 +44,10 @@
 	cursor: pointer;
 }
 
+.create--client--wrapper {
+	margin-top: 20px;
+}
+
 .create-client {
 	margin-top: 20px;
 	width: 100%;
@@ -109,6 +113,10 @@
 
 .title:hover a {
 	cursor: pointer;
+}
+
+.dashboard-wrapper {
+	margin-top: 20px;
 }
 
 .dashboard-link {

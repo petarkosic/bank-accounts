@@ -39,3 +39,8 @@ export async function createClient(clientData) {
     const { data } = await api.post(`/clients/create-client`, clientData);
     return data;
 };
+
+export async function getAccountNumber() {
+    const { data } = await api.get(`/clients/get-account-number`);
+    return data;
+};

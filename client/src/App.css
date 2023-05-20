@@ -86,6 +86,36 @@
 	font-size: 1.5rem;
 }
 
+.get-new-number {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.get-new-number input {
+	width: 40%;
+	background: #aaa;
+	color: #eee;
+}
+
+.get-new-number input:hover {
+	cursor: not-allowed;
+}
+
+.button-get-new-number {
+	width: 40%;
+	height: 40px;
+	border: none;
+	background: black;
+	color: white;
+	font-size: 1.125rem;
+	border-radius: 8px;
+}
+
+.button-get-new-number:hover {
+	cursor: pointer;
+}
+
 .header .client-edit {
 	width: 150px;
 	height: 60%;

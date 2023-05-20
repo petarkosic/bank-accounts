@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createClient } from '../hooks/fetchClients';
+import { createClient, getAccountNumber } from '../hooks/fetchClients';
 
 const CreateClient = () => {
+    const [accountNumber, setAccountNumber] = useState('');
     const [data, setData] = useState({
         first_name: '',
         last_name: '',
@@ -39,6 +40,15 @@ const CreateClient = () => {
         navigate(-1);
     }
 
+    const handleClick = async () => {
+        const { accountNumber } = await getAccountNumber();
+        setAccountNumber(accountNumber);
+    }
+
+    useEffect(() => {
+        handleClick();
+    }, [])
+
     return (
         <div className="create--client--wrapper">
             <div className="buttons">
@@ -71,7 +81,14 @@ const CreateClient = () => {
                     <div className="column">
                         <div className="create-client-inputs">
                             <label htmlFor="account-number" className='label'>Account number</label>
-                            <input type="text" name='account_number' id="account-number" onChange={handleChange} />
+                            <div className="get-new-number" >
+                                <input type="text" name='account_number' id="account-number" onChange={handleChange} disabled={true} value={accountNumber} />
+                                <button
+                                    className='button-get-new-number'
+                                    onClick={handleClick}
+
+                                >Get New Number</button>
+                            </div>
                             <label htmlFor="currency-name" className='label'>Currency name</label>
                             <input type="text" name='currency_name' id="currency-name" onChange={handleChange} />
                             <label htmlFor="currency-code" className='label'>Currency code</label>

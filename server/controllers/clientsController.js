@@ -1,5 +1,5 @@
 import pool from './../db/db.js'
-import { parseNumber } from '../utils/index.js';
+import { generateAccountNumber, parseNumber } from '../utils/index.js';
 
 export const getAllClients = async (req, res, next) => {
 
@@ -197,6 +197,44 @@ export const updateCardLimitAndWithdrawalFee = async (req, res, next) => {
     }
 }
 
+export const getAccountNumber = async (req, res, next) => {
+    const client = await pool.connect();
+
+    // account numbers should be cached for faster check
+    let account_number = await generateAccountNumber();
+
+    try {
+        await client.query('BEGIN');
+
+        // check if acc number is in the database
+        let accountNumberQuery = `
+        SELECT * FROM accounts WHERE account_number = $1;
+        `;
+
+        let checkAccountNumber = await client.query(accountNumberQuery, [account_number]);
+
+        await client.query('COMMIT');
+
+        if (checkAccountNumber.rows.length > 0) {
+            res.status(400).json({
+                success: false,
+                message: 'Account number already exists',
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            accountNumber: account_number,
+        })
+
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error(err);
+    } finally {
+        client.release();
+    }
+}
+
 export const createClient = async (req, res, next) => {
     const client = await pool.connect();
 
@@ -208,7 +246,7 @@ export const createClient = async (req, res, next) => {
         street_name,
         house_number,
         postal_code,
-        account_number,
+        // account_number,
         currency_name,
         currency_code,
         deposited_amount,
@@ -235,6 +273,22 @@ export const createClient = async (req, res, next) => {
 
     try {
         await client.query('BEGIN');
+
+        // check if acc number is in the database
+        // let isAccountNumberInDatabase = `
+        // SELECT * FROM accounts WHERE account_number = $1;
+        // `;
+
+        // let createAccountNumberDatabaseCall = await client.query(isAccountNumberInDatabase, [account_number]);
+
+        // if (createAccountNumberDatabaseCall.rows.length > 0) {
+        //     res.status(400).json({
+        //         success: false,
+        //         message: 'Account number already exists',
+        //     })
+        // }
+        // if it is, generate a new one
+        // else, use the existing one
 
         let createClientQuery = `
         INSERT INTO clients (first_name, last_name, date_of_birth) VALUES ($1, $2, $3)

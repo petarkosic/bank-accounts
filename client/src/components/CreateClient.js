@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createClient, getAccountNumber } from '../hooks/fetchClients';
+import { countryNamesAndCodes } from '../utils/countryNamesAndCodes';
 
 const CreateClient = () => {
     const [accountNumber, setAccountNumber] = useState('');
@@ -34,6 +35,21 @@ const CreateClient = () => {
         })
     }
 
+    const getCountryCode = countryName => {
+        const countryCode = countryNamesAndCodes[countryName];
+        return countryCode || '';
+    }
+
+    const handleCountryChange = e => {
+        const countryCode = getCountryCode(e.target.value);
+
+        setData({
+            ...data,
+            country_name: e.target.value,
+            country_code: countryCode,
+        })
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
         mutate(data);
@@ -63,11 +79,24 @@ const CreateClient = () => {
                             <label htmlFor="last-name" className='label'>Last name</label>
                             <input type="text" name='last_name' id="last-name" onChange={handleChange} />
                             <label htmlFor="date-of-birth" className='label'>Date of birth</label>
-                            <input type="text" name='date_of_birth' id="date-of-birth" onChange={handleChange} />
+                            <input type="text" name='date_of_birth' id="date-of-birth" placeholder='YYYY-MM-DD' onChange={handleChange} />
                             <label htmlFor="country-name" className='label'>Country name</label>
-                            <input type="text" name='country_name' id="country-name" onChange={handleChange} />
+                            <div>
+                                <select name="country_name" id="" onChange={handleCountryChange}>
+                                    <option value="------Select a Country------">------Select a Country------</option>
+                                    {Object.entries(countryNamesAndCodes).map(country => (
+                                        <option key={country[0]} value={country[0]}>{country[0]}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            {data.country_name === '' && (
+                                <p className='error'>Please select a country</p>
+                            )}
                             <label htmlFor="country-code" className='label'>Country code</label>
-                            <input type="text" name='country_code' id="country-code" onChange={handleChange} />
+                            <div>
+                                {data.country_code}
+                            </div>
+
                             <label htmlFor="street-name" className='label'>Street name</label>
                             <input type="text" name='street_name' id="street-name" onChange={handleChange} />
                             <label htmlFor="house-number" className='label'>House number</label>

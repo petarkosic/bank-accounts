@@ -158,7 +158,6 @@ export const currencyNamesAndCodes = {
     'Uganda Shilling': 'UGX',
     'Hryvnia': 'UAH',
     'UAE Dirham': 'AED',
-    'US Dollar (Next day)': 'USN',
     'Uruguay Peso en Unidades Indexadas (URUIURUI)': 'UYI',
     'Peso Uruguayo': 'UYU',
     'Uzbekistan Sum': 'UZS',

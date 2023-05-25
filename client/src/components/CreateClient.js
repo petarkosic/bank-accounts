@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createClient, getAccountNumber } from '../hooks/fetchClients';
 import { countryNamesAndCodes } from '../utils/countryNamesAndCodes';
+import { countriesAndCurrencies } from '../utils/countriesAndCurrencies';
+import { currencyNamesAndCodes } from '../utils/currencyNamesAndCodes';
 
 const CreateClient = () => {
     const [accountNumber, setAccountNumber] = useState('');
@@ -40,13 +42,27 @@ const CreateClient = () => {
         return countryCode || '';
     }
 
+    const getCurrencyName = countryName => {
+        const currencyName = countriesAndCurrencies[countryName.toUpperCase()];
+        return currencyName || '';
+    }
+
+    const getCurrencyCode = currencyName => {
+        const currencyCode = currencyNamesAndCodes[currencyName];
+        return currencyCode || '';
+    }
+
     const handleCountryChange = e => {
         const countryCode = getCountryCode(e.target.value);
+        const currencyName = getCurrencyName(e.target.value);
+        const currencyCode = getCurrencyCode(currencyName);
 
         setData({
             ...data,
             country_name: e.target.value,
             country_code: countryCode,
+            currency_name: currencyName,
+            currency_code: currencyCode,
         })
     }
 
@@ -80,21 +96,28 @@ const CreateClient = () => {
                             <input type="text" name='last_name' id="last-name" onChange={handleChange} />
                             <label htmlFor="date-of-birth" className='label'>Date of birth</label>
                             <input type="text" name='date_of_birth' id="date-of-birth" placeholder='YYYY-MM-DD' onChange={handleChange} />
-                            <label htmlFor="country-name" className='label'>Country name</label>
-                            <div>
-                                <select name="country_name" id="" onChange={handleCountryChange}>
-                                    <option value="------Select a Country------">------Select a Country------</option>
-                                    {Object.entries(countryNamesAndCodes).map(country => (
-                                        <option key={country[0]} value={country[0]}>{country[0]}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            {data.country_name === '' && (
-                                <p className='error'>Please select a country</p>
-                            )}
-                            <label htmlFor="country-code" className='label'>Country code</label>
-                            <div>
-                                {data.country_code}
+                            <div className='country-selector-wrapper'>
+                                <div className="country-select">
+                                    <label htmlFor="country-name" className='label'>Country name</label>
+                                    <div>
+                                        <select name="country_name" required onChange={handleCountryChange}>
+                                            <option value="------Select a Country------">------Select a Country------</option>
+                                            {Object.entries(countryNamesAndCodes).map(country => (
+                                                <option key={country[0]} value={country[0]}>{country[0]}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="country-code">
+                                    <label htmlFor="country-code" className='label'>Country code</label>
+                                    {(data.country_name === '' || data.country_name === '------Select a Country------') ? (
+                                        <div className='error'>Select a country</div>
+                                    ) : (
+                                        <div>
+                                            {data.country_code}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <label htmlFor="street-name" className='label'>Street name</label>
@@ -118,10 +141,26 @@ const CreateClient = () => {
 
                                 >Get New Number</button>
                             </div>
-                            <label htmlFor="currency-name" className='label'>Currency name</label>
-                            <input type="text" name='currency_name' id="currency-name" onChange={handleChange} />
-                            <label htmlFor="currency-code" className='label'>Currency code</label>
-                            <input type="text" name='currency_code' id="currency-code" onChange={handleChange} />
+
+                            <div className="currency-wrapper">
+                                <div className="currency-name">
+                                    <label htmlFor="currency-name" className='label'>Currency name</label>
+                                    {data.currency_name === '' ? (
+                                        <div>Select a Country</div>
+                                    ) : (
+                                        <div>{data.currency_name}</div>
+                                    )}
+                                </div>
+                                <div className="currency-code">
+                                    <label htmlFor="currency-code" className='label'>Currency code</label>
+                                    {data.currency_code === '' ? (
+                                        <div className='error'>No currency</div>
+                                    ) : (
+                                        <div>{data.currency_code}</div>
+                                    )}
+                                </div>
+                            </div>
+
                             <label htmlFor="deposited-amount" className='label'>Deposited amount</label>
                             <input type="text" name='deposited_amount' id="deposited-amount" onChange={handleChange} />
                             <label htmlFor="type-of-customer" className='label'>Type of customer</label>

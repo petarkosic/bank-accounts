@@ -5,6 +5,7 @@ import { createClient, getAccountNumber } from '../hooks/fetchClients';
 import { countryNamesAndCodes } from '../utils/countryNamesAndCodes';
 import { countriesAndCurrencies } from '../utils/countriesAndCurrencies';
 import { currencyNamesAndCodes } from '../utils/currencyNamesAndCodes';
+import { creditPayment, typeOfAccount, typeOfCustomer } from '../utils/accountTypes';
 
 const CreateClient = () => {
     const [accountNumber, setAccountNumber] = useState('');
@@ -164,17 +165,23 @@ const CreateClient = () => {
                             <label htmlFor="deposited-amount" className='label'>Deposited amount</label>
                             <input type="text" name='deposited_amount' id="deposited-amount" onChange={handleChange} />
                             <label htmlFor="type-of-customer" className='label'>Type of customer</label>
-                            <input type="text" name='type_of_customer' id="type-of-customer" onChange={handleChange} />
+                            {typeOfCustomer.map(customer => (
+                                <button key={customer.id} value={customer}>{customer}</button>
+                            ))}
                             <label htmlFor="type-of-account" className='label'>Type of account</label>
-                            <input type="text" name='type_of_account' id="type-of-account" onChange={handleChange} />
+                            {typeOfAccount.map(account => (
+                                <button key={account.id} value={account}>{account}</button>
+                            ))}
                             <label htmlFor="credit-payment" className='label'>Credit payment</label>
-                            <input type="text" name='credit_payment' id="credit-payment" onChange={handleChange} />
+                            {creditPayment.map(payment => (
+                                <button key={payment.id} value={payment}>{payment}</button>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
             <button onClick={handleSubmit}>Create Client</button>
-        </div>
+        </div >
     )
 }
 

@@ -8,7 +8,6 @@ import { currencyNamesAndCodes } from '../utils/currencyNamesAndCodes';
 import { creditPayment, typeOfAccount, typeOfCustomer } from '../utils/accountTypes';
 
 const CreateClient = () => {
-    const [accountNumber, setAccountNumber] = useState('');
     const [data, setData] = useState({
         first_name: '',
         last_name: '',
@@ -75,7 +74,29 @@ const CreateClient = () => {
 
     const handleClick = async () => {
         const { accountNumber } = await getAccountNumber();
-        setAccountNumber(accountNumber);
+        setData({
+            ...data,
+            account_number: accountNumber
+        })
+    }
+
+    const handleTypeClick = value => {
+        if (typeOfCustomer.includes(value)) {
+            setData({
+                ...data,
+                type_of_customer: value,
+            })
+        } else if (typeOfAccount.includes(value)) {
+            setData({
+                ...data,
+                type_of_account: value,
+            })
+        } else if (creditPayment.includes(value)) {
+            setData({
+                ...data,
+                credit_payment: value,
+            })
+        }
     }
 
     useEffect(() => {
@@ -135,7 +156,7 @@ const CreateClient = () => {
                         <div className="create-client-inputs">
                             <label htmlFor="account-number" className='label'>Account number</label>
                             <div className="get-new-number" >
-                                <input type="text" name='account_number' id="account-number" onChange={handleChange} disabled={true} value={accountNumber} />
+                                <input type="text" name='account_number' id="account-number" onChange={handleChange} disabled={true} value={data.account_number} />
                                 <button
                                     className='button-get-new-number'
                                     onClick={handleClick}
@@ -164,23 +185,39 @@ const CreateClient = () => {
 
                             <label htmlFor="deposited-amount" className='label'>Deposited amount</label>
                             <input type="text" name='deposited_amount' id="deposited-amount" onChange={handleChange} />
-                            <label htmlFor="type-of-customer" className='label'>Type of customer</label>
-                            {typeOfCustomer.map(customer => (
-                                <button key={customer.id} value={customer}>{customer}</button>
-                            ))}
-                            <label htmlFor="type-of-account" className='label'>Type of account</label>
-                            {typeOfAccount.map(account => (
-                                <button key={account.id} value={account}>{account}</button>
-                            ))}
-                            <label htmlFor="credit-payment" className='label'>Credit payment</label>
-                            {creditPayment.map(payment => (
-                                <button key={payment.id} value={payment}>{payment}</button>
-                            ))}
+
+                            <div className="account-types">
+                                <div className="types type-of-customer">
+                                    <label htmlFor="type-of-customer" className='card-label'>Type of customer</label>
+                                    <div className='type-buttons'>
+                                        {typeOfCustomer.map((customer, idx) => (
+                                            <button className='button' key={idx} value={customer} onClick={() => handleTypeClick(customer)}>{customer}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="types type-of-account">
+                                    <label htmlFor="type-of-account" className='card-label'>Type of account</label>
+                                    <div className='type-buttons'>
+                                        {typeOfAccount.map((account, idx) => (
+                                            <button className='button' key={idx} value={account} onClick={() => handleTypeClick(account)}>{account}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="types credit-payment">
+                                    <label htmlFor="credit-payment" className='card-label'>Credit payment</label>
+                                    <div className='type-buttons'>
+                                        {creditPayment.map((payment, idx) => (
+                                            <button className='button' key={idx} value={payment} onClick={() => handleTypeClick(payment)}>{payment}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <button onClick={handleSubmit}>Create Client</button>
+            <button className='create-new-client-button' onClick={handleSubmit}>Create New Client Account</button>
         </div >
     )
 }

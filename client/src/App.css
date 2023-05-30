@@ -114,6 +114,10 @@
 	background: #ccc;
 }
 
+.country-select select:hover {
+	cursor: pointer;
+}
+
 .country-code {
 	width: 30%;
 	padding: 0 1rem;
@@ -193,6 +197,82 @@
 
 .button-get-new-number:hover {
 	cursor: pointer;
+}
+
+.account-types {
+	width: 100%;
+	height: 250px;
+	display: flex;
+	gap: 1.5rem;
+}
+
+.types {
+	width: 33%;
+	margin: 1rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 1rem;
+	transition: all 300ms ease;
+}
+
+.type-of-customer {
+	height: 100%;
+}
+
+.type-of-account {
+	height: 100%;
+}
+
+.credit-payment {
+	height: 100%;
+}
+
+.account-types .card-label {
+	color: white;
+	font-size: 1.25rem;
+	width: 100%;
+	margin: 1rem 0;
+}
+
+.type-buttons {
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+}
+
+.type-buttons .button {
+	border: none;
+	border-radius: 8px;
+	width: 100%;
+	transition: all 200ms ease;
+	font-size: 1.125rem;
+}
+
+.type-buttons .button:hover {
+	cursor: pointer;
+	background: #888;
+	color: white;
+}
+
+.create-new-client-button {
+	margin: 1rem 0;
+	padding: 1rem 2rem;
+	border: none;
+	border-radius: 8px;
+	font-size: 1rem;
+	font-weight: bold;
+	transition: all 200ms ease;
+}
+
+.create-new-client-button:hover {
+	cursor: pointer;
+	background: #888;
+	color: white;
 }
 
 .header .client-edit {

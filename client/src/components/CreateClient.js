@@ -8,6 +8,10 @@ import { currencyNamesAndCodes } from '../utils/currencyNamesAndCodes';
 import { creditPayment, typeOfAccount, typeOfCustomer } from '../utils/accountTypes';
 
 const CreateClient = () => {
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const [selectedAccount, setSelectedAccount] = useState(null);
+    const [selectedPayment, setSelectedPayment] = useState(null);
+
     const [data, setData] = useState({
         first_name: '',
         last_name: '',
@@ -80,24 +84,29 @@ const CreateClient = () => {
         })
     }
 
-    const handleTypeClick = value => {
-        if (typeOfCustomer.includes(value)) {
-            setData({
-                ...data,
-                type_of_customer: value,
-            })
-        } else if (typeOfAccount.includes(value)) {
-            setData({
-                ...data,
-                type_of_account: value,
-            })
-        } else if (creditPayment.includes(value)) {
-            setData({
-                ...data,
-                credit_payment: value,
-            })
-        }
-    }
+    const handleCustomerClick = (customer) => {
+        setSelectedCustomer(customer);
+        setData({
+            ...data,
+            type_of_customer: customer,
+        })
+    };
+
+    const handleAccountClick = (account) => {
+        setSelectedAccount(account);
+        setData({
+            ...data,
+            type_of_account: account,
+        })
+    };
+
+    const handlePaymentClick = (payment) => {
+        setSelectedPayment(payment);
+        setData({
+            ...data,
+            credit_payment: payment,
+        })
+    };
 
     useEffect(() => {
         handleClick();
@@ -191,7 +200,7 @@ const CreateClient = () => {
                                     <label htmlFor="type-of-customer" className='card-label'>Type of customer</label>
                                     <div className='type-buttons'>
                                         {typeOfCustomer.map((customer, idx) => (
-                                            <button className='button' key={idx} value={customer} onClick={() => handleTypeClick(customer)}>{customer}</button>
+                                            <button className={`button ${selectedCustomer === customer ? 'selected' : ''}`} key={idx} value={customer} onClick={() => handleCustomerClick(customer)}>{customer}</button>
                                         ))}
                                     </div>
                                 </div>
@@ -199,7 +208,7 @@ const CreateClient = () => {
                                     <label htmlFor="type-of-account" className='card-label'>Type of account</label>
                                     <div className='type-buttons'>
                                         {typeOfAccount.map((account, idx) => (
-                                            <button className='button' key={idx} value={account} onClick={() => handleTypeClick(account)}>{account}</button>
+                                            <button className={`button ${selectedAccount === account ? 'selected' : ''}`} key={idx} value={account} onClick={() => handleAccountClick(account)}>{account}</button>
                                         ))}
                                     </div>
                                 </div>
@@ -207,7 +216,7 @@ const CreateClient = () => {
                                     <label htmlFor="credit-payment" className='card-label'>Credit payment</label>
                                     <div className='type-buttons'>
                                         {creditPayment.map((payment, idx) => (
-                                            <button className='button' key={idx} value={payment} onClick={() => handleTypeClick(payment)}>{payment}</button>
+                                            <button className={`button ${selectedPayment === payment ? 'selected' : ''}`} key={idx} value={payment} onClick={() => handlePaymentClick(payment)}>{payment}</button>
                                         ))}
                                     </div>
                                 </div>

@@ -24,7 +24,7 @@ function Client() {
 
     const { data, error, isError, isLoading } = useQuery(['client', clientId], () => fetchClient(clientId), {
         onSuccess: (type) => {
-            setTypeOfCustomer(type?.[0].type_of_customer)
+            setTypeOfCustomer(type?.[0]?.type_of_customer)
         }
     });
 

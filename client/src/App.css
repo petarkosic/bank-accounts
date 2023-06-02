@@ -1,3 +1,14 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0;
+	padding: 0;
+}
+
 .container {
 	margin: 0;
 	padding: 0;
@@ -281,7 +292,7 @@
 
 .create-new-client-button:hover {
 	cursor: pointer;
-	background: #888;
+	background: linear-gradient(45deg, #aaa, #2c3e50);
 	color: white;
 }
 
@@ -338,6 +349,20 @@
 
 .dashboard-link a:hover {
 	color: white;
+}
+
+.premium-customers {
+	margin-top: 20px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: start;
+	gap: 10px;
+	font-size: 1.5rem;
+	color: white;
+}
+
+.premium-customers span {
+	font-weight: bold;
 }
 
 .clients {

@@ -44,3 +44,9 @@ export async function getAccountNumber() {
     const { data } = await api.get(`/clients/get-account-number`);
     return data;
 };
+
+export async function showPremiumCustomersByCountry(country_name) {
+    const encodedCountryName = encodeURI(country_name);
+    const { data } = await api.get(`/clients/premium?country=${encodedCountryName}`);
+    return data;
+}

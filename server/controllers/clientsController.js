@@ -246,7 +246,7 @@ export const createClient = async (req, res, next) => {
         street_name,
         house_number,
         postal_code,
-        // account_number,
+        account_number,
         currency_name,
         currency_code,
         deposited_amount,
@@ -333,17 +333,55 @@ export const createClient = async (req, res, next) => {
 }
 
 export const showPremiumCustomersByCountry = async (req, res, next) => {
+    const client = await pool.connect();
+
+    const { country } = req.query;
+    const decodedCountry = decodeURI(country);
+
     try {
+        await client.query('BEGIN');
+
         let query = `
-        
+        SELECT ca.country_name, COUNT(c.client_id)
+        FROM clients c
+        LEFT JOIN client_address ca 
+        ON c.client_id = ca.client_id 
+        LEFT JOIN accounts a 
+        ON a.client_id = c.client_id 
+        LEFT JOIN accounts_limit al 
+        ON a.account_id = al.account_id
+        WHERE al.type_of_customer = 'premium' AND ca.country_name = $1
+        GROUP BY ca.country_name;
         `;
 
-        let client = await pool.query(query);
+        let data = await pool.query(query, [decodedCountry]);
+
+        await client.query('COMMIT');
+
+        if (data.rows.length == 0) {
+            res.status(200).json({
+                premiumCustomers: [
+                    {
+                        country_name: country,
+                        count: 0,
+                    },
+                ]
+            });
+        }
 
         res.status(200).json({
-            client: client.rows,
+            premiumCustomers: [
+                {
+                    country_name: country,
+                    count: Number(data.rows[0].count),
+                }
+            ]
         });
     } catch (err) {
+        await client.query('ROLLBACK');
+
         console.error(err.message);
+    } finally {
+        client.release();
     }
 };

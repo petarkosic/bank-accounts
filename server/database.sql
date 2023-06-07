@@ -63,3 +63,43 @@ CASE WHEN type_of_account = 'debit' THEN 0 WHEN type_of_account = 'credit' AND t
 
 UPDATE accounts_limit
 SET withdrawal_fee = CASE WHEN type_of_customer = 'regular' THEN 1 WHEN type_of_customer = 'premium' THEN 0 END;
+
+CREATE OR REPLACE FUNCTION update_card_limit() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    CASE
+        WHEN OLD.type_of_account = 'debit' THEN 
+            NEW.card_limit := 0;
+        WHEN OLD.type_of_account = 'credit' AND NEW.type_of_customer = 'regular' THEN 
+            NEW.card_limit := 5000;
+        WHEN OLD.type_of_account = 'credit' AND NEW.type_of_customer = 'premium' THEN 
+            NEW.card_limit := 20000;
+    END CASE;
+    RETURN NEW;
+END;
+$$ language plpgsql;
+
+CREATE TRIGGER trigger_update_card_limit
+    BEFORE UPDATE ON accounts_limit
+    FOR EACH ROW
+    EXECUTE FUNCTION update_card_limit();
+
+
+
+CREATE OR REPLACE FUNCTION update_withdrawal_fee() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    CASE
+        WHEN NEW.type_of_customer = 'regular' THEN 
+            NEW.withdrawal_fee := 1;
+        WHEN NEW.type_of_customer = 'premium' THEN 
+            NEW.withdrawal_fee := 0;
+    END CASE;
+    RETURN NEW;
+END;
+$$ language plpgsql;
+
+CREATE TRIGGER trigger_update_withdrawal_fee
+    BEFORE UPDATE ON accounts_limit
+    FOR EACH ROW
+    EXECUTE FUNCTION update_withdrawal_fee();

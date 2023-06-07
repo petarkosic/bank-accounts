@@ -5,7 +5,9 @@ import { motion } from 'framer-motion';
 import { useSearchClientContext } from '../context/SearchClientContext';
 
 function Clients() {
-    const { data, error, isError, isLoading } = useQuery(['clients'], fetchClients);
+    const { data, error, isError, isLoading } = useQuery(['clients'], fetchClients, {
+        refetchOnWindowFocus: false,
+    });
 
     const { user } = useSearchClientContext();
 

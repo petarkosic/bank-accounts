@@ -23,6 +23,7 @@ function Client() {
     const depositWithdrawSubmitButton = useRef();
 
     const { data, error, isError, isLoading } = useQuery(['client', clientId], () => fetchClient(clientId), {
+        refetchOnWindowFocus: false,
         onSuccess: (type) => {
             setTypeOfCustomer(type?.[0]?.type_of_customer)
         }

@@ -385,3 +385,45 @@ export const showPremiumCustomersByCountry = async (req, res, next) => {
         client.release();
     }
 };
+
+export const customersToReachCardLimit = async (req, res, next) => {
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        // if database supports clients with single accounts only
+        let query = `
+        SELECT c.client_id, c.first_name, c.last_name, al.card_limit, a.deposited_amount, a.account_number, a.currency_name
+        FROM clients c
+        JOIN accounts a ON c.client_id = a.client_id
+        JOIN accounts_limit al ON a.account_id = al.account_id
+        WHERE a.deposited_amount >= al.card_limit * 0.9;
+        `;
+
+        // if database supports clients with multiple accounts
+        // let query = `
+        // SELECT c.client_id, c.first_name, c.last_name, al.card_limit, SUM(a.deposited_amount) AS total_deposited_amount
+        // FROM clients c
+        // JOIN accounts a ON c.client_id = a.client_id
+        // JOIN accounts_limit al ON a.account_id = al.account_id
+        // GROUP BY c.client_id, c.first_name, c.last_name, al.card_limit
+        // HAVING SUM(a.deposited_amount) >= al.card_limit * 0.9;
+        // `;
+        let data = await pool.query(query);
+
+        await client.query('COMMIT');
+
+        res.status(200).json({
+            customersToReachCardLimit: data.rows
+        });
+    } catch (err) {
+        await client.query('ROLLBACK');
+
+        console.error(err.message);
+    } finally {
+        client.release();
+    }
+};
+
+

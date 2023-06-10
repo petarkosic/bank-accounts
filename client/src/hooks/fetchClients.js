@@ -50,3 +50,8 @@ export async function showPremiumCustomersByCountry(country_name) {
     const { data } = await api.get(`/clients/premium?country=${encodedCountryName}`);
     return data;
 }
+
+export async function customersToReachCardLimit() {
+    const { data } = await api.get(`/clients/card-limit`);
+    return data;
+}

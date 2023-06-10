@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { showPremiumCustomersByCountry } from '../hooks/fetchClients';
+import { customersToReachCardLimit, showPremiumCustomersByCountry } from '../hooks/fetchClients';
 import { countryNamesAndCodes } from '../utils/countryNamesAndCodes';
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,6 +25,10 @@ const Dashboard = () => {
         }
     });
 
+    const { data } = useQuery(['card-limit'], () => customersToReachCardLimit(), {
+        refetchOnWindowFocus: false
+    })
+
     if (isError) {
         return <div>Error! {error}</div>;
     }
@@ -35,24 +39,36 @@ const Dashboard = () => {
                 <button className="button-go-back" onClick={() => navigate(-1)}>Go Back</button>
             </div>
 
-            <div>
-                <label htmlFor="Country name"></label>
+            <div className='premium-customers-by-country'>
+                <label htmlFor="Country name">Select a country to see the number of premium customers</label>
                 <select name="country_name" required onChange={handleCountryChange}>
                     <option value="------Select a Country------">------Select a Country------</option>
                     {Object.entries(countryNamesAndCodes).map(country => (
                         <option key={country[0]} value={country[0]}>{country[0]}</option>
                     ))}
                 </select>
+                {premiumCustomers?.country_name && premiumCustomers?.country_name !== '------Select a Country------' && (
+                    <div className='premium-customers'>
+                        <p>The number of premium customers in</p>
+                        <span>{premiumCustomers?.country_name}</span>
+                        <p>is</p>
+                        <span>{premiumCustomers?.count}</span>
+                    </div>
+                )}
             </div>
-            {premiumCustomers?.country_name && premiumCustomers?.country_name !== '------Select a Country------' && (
-                <div className='premium-customers'>
-                    <p>The number of premium customers in</p>
-                    <span>{premiumCustomers?.country_name}</span>
-                    <p>is</p>
-                    <span>{premiumCustomers?.count}</span>
-                </div>
-            )}
-            <div>Customers about to reach credit card limit</div>
+            <p className='customers-card-limit-label'>Customers about to reach credit card limit</p>
+            <div className='customers-card-limit'>
+                {data?.customersToReachCardLimit?.map(customer => (
+                    <div key={customer.id} className='customer-card-limit'>
+                        <p>{customer.first_name} {customer.last_name}</p>
+                        <p>Account number: {customer.account_number}</p>
+                        <p>Deposited amount: {customer.deposited_amount?.slice(0, -2)}</p>
+                        <p>Currency: {customer.currency_name}</p>
+                        <p>Card limit: {customer.card_limit}</p>
+                    </div>
+                ))}
+
+            </div>
         </div>
     )
 }

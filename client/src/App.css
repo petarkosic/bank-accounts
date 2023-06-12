@@ -767,7 +767,43 @@ p {
 	color: black;
 }
 
-.search {
+form {
+	width: 100%;
+	color: white;
+}
+
+.form-wrapper {
+	width: 25%;
+}
+
+@media screen and (max-width: 1600px) {
+	.form-wrapper {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.form-wrapper {
+		width: 100%;
+	}
+}
+
+.inputs {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+}
+
+.inputs .search {
+	height: 50px;
+	font-size: 1.75rem;
+	text-align: center;
+	border: none;
+}
+
+/* .search {
 	width: 50%;
 	height: 30px;
 	margin: 0 auto;
@@ -776,7 +812,7 @@ p {
 	background: #888;
 	color: white;
 	font-size: 1rem;
-}
+} */
 
 .funds-error {
 	color: red;

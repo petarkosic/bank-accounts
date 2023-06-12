@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
-import HeaderSearch from "./HeaderSearch";
+import Search from "./Search";
 
 const Header = () => {
     const location = useLocation();
@@ -15,7 +15,7 @@ const Header = () => {
                     <div className="dashboard-link">
                         <Link to={'/dashboard'}>View Dashboard</Link>
                     </div>
-                    <HeaderSearch />
+                    <Search />
                     <Link className="client-add" to={'/create-client'}>Add Client</Link>
                 </>
             }

@@ -720,6 +720,7 @@ p {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	position: relative;
 }
 
 .modal-header {
@@ -743,12 +744,13 @@ p {
 	width: 100%;
 	display: flex;
 	gap: 10px;
+	color: black;
 }
 
 .from {
 	width: 50%;
 	height: 300px;
-	padding-top: 55px;
+	padding-top: 65px;
 }
 
 .label {
@@ -765,6 +767,42 @@ p {
 
 .to label {
 	color: black;
+}
+
+.column-heading {
+	position: absolute;
+	top: -30px;
+	opacity: 0.1;
+	font-size: 8em;
+	font-weight: 900;
+	user-select: none;
+}
+
+.to .column-heading {
+	right: 0;
+}
+
+.search-container {
+	width: 100%;
+}
+
+.search-container form {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: black;
+}
+
+.search-container form .form-wrapper {
+	width: 100%;
+}
+
+.search-container form .form-wrapper .inputs input {
+	width: 30%;
+	height: 40px;
+	border: 1px solid black;
+	border-radius: 8px;
 }
 
 form {
@@ -822,7 +860,6 @@ form {
 
 .modal-inputs {
 	width: 100%;
-	height: 250px;
 	display: flex;
 	flex-direction: column;
 	gap: 5px;

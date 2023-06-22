@@ -1,5 +1,13 @@
 import pool from './../db/db.js'
 import { generateAccountNumber, parseNumber } from '../utils/index.js';
+import { createRedisClient, getRedisClient } from './../services/redisService.js'
+
+let redis;
+async function runRedis() {
+    await createRedisClient();
+    redis = await getRedisClient()
+}
+runRedis();
 
 export const getAllClients = async (req, res, next) => {
 
@@ -198,40 +206,28 @@ export const updateCardLimitAndWithdrawalFee = async (req, res, next) => {
 }
 
 export const getAccountNumber = async (req, res, next) => {
-    const client = await pool.connect();
-
-    // account numbers should be cached for faster check
-    let account_number = await generateAccountNumber();
-
     try {
-        await client.query('BEGIN');
+        let account_number = await generateAccountNumber();
 
-        // check if acc number is in the database
-        let accountNumberQuery = `
-        SELECT * FROM accounts WHERE account_number = $1;
-        `;
+        let checkAccountNumberInCache = await redis.get(account_number);
 
-        let checkAccountNumber = await client.query(accountNumberQuery, [account_number]);
-
-        await client.query('COMMIT');
-
-        if (checkAccountNumber.rows.length > 0) {
-            res.status(400).json({
+        if (checkAccountNumberInCache) {
+            account_number = await generateAccountNumber();
+            res.status(409).json({
                 success: false,
-                message: 'Account number already exists',
+                message: 'Account number already exists. Generating new one.',
             })
+            return;
         }
+
+        await redis.set(account_number, account_number);
 
         res.status(200).json({
             success: true,
             accountNumber: account_number,
         })
-
     } catch (err) {
-        await client.query('ROLLBACK');
         console.error(err);
-    } finally {
-        client.release();
     }
 }
 

@@ -3,7 +3,7 @@ export const parseNumber = (num) => {
 };
 
 const generateRandomNumber = (length) => {
-    return (Math.floor(Math.random() * `${length === 3 ? 1000 : 99}`) + 1).toString().padStart(length, '0');
+    return (Math.floor(Math.random() * `${length === 3 ? 999 : 99}`) + 1).toString().padStart(length, '0');
 }
 
 export const generateAccountNumber = () => {

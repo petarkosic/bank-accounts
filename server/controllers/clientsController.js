@@ -213,17 +213,14 @@ export const getAccountNumber = async (req, res, next) => {
 
         if (checkAccountNumberInCache) {
             account_number = await generateAccountNumber();
-            res.status(409).json({
-                success: false,
-                message: 'Account number already exists. Generating new one.',
-            })
-            return;
+            return await getAccountNumber();
         }
 
         await redis.set(account_number, account_number);
 
         res.status(200).json({
             success: true,
+            message: 'Account number generated.',
             accountNumber: account_number,
         })
     } catch (err) {

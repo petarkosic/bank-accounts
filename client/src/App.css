@@ -814,6 +814,10 @@ form {
 	width: 25%;
 }
 
+.form-wrapper > .error {
+	color: #ff3e4e;
+}
+
 @media screen and (max-width: 1600px) {
 	.form-wrapper {
 		width: 40%;
@@ -854,7 +858,7 @@ form {
 }
 
 .search.error {
-	box-shadow: inset 0 0 5px 0 red;
+	box-shadow: inset 0 0 5px 0 #ff3e4e;
 }
 
 .funds-error {

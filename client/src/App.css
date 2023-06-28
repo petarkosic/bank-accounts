@@ -853,6 +853,10 @@ form {
 	overflow: hidden;
 }
 
+.search.error {
+	box-shadow: inset 0 0 5px 0 red;
+}
+
 .funds-error {
 	position: absolute;
 	top: 43%;

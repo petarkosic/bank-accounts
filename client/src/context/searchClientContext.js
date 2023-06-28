@@ -1,7 +1,6 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer } from "react";
 import clientReducer from './SearchClientReducer';
 import { searchByAccountNumber } from "../hooks/fetchClients";
-import { useQuery } from "@tanstack/react-query";
 
 const ClientContext = createContext();
 

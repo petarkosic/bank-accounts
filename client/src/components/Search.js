@@ -1,20 +1,43 @@
 import { useEffect, useState } from "react";
 import { useSearchClientContext } from "../context/SearchClientContext";
 import useDebounce from "../hooks/useDebounce";
+import useHandleKeyDown from "../hooks/useHandleKeyDown";
+import searchInputSchema from "../validations/searchInputSchema";
 
 const Search = () => {
-    const [inputOne, setInputOne] = useState('');
-    const [inputTwo, setInputTwo] = useState('');
-    const [inputThree, setInputThree] = useState('');
+    const { inputOne, inputTwo, inputThree, setInputOne, setInputTwo, setInputThree, handleKeyDown } = useHandleKeyDown();
 
-    const inputText = inputOne + inputTwo + inputThree
+    const [errors, setErrors] = useState({});
+
+    const inputText = inputOne + inputTwo + inputThree;
 
     const debounceSearchQuery = useDebounce(inputText, 1500);
 
     const { search } = useSearchClientContext();
 
     useEffect(() => {
-        search(debounceSearchQuery);
+        const { error } = searchInputSchema.validate({
+            inputOne,
+            inputTwo,
+            inputThree
+        });
+
+        if (error) {
+            const validationErrors = {};
+            error.details.forEach((detail) => {
+                if (detail.path[0] === 'inputOne') {
+                    validationErrors['Input One'] = detail.message;
+                } else if (detail.path[0] === 'inputTwo') {
+                    validationErrors['Input Two'] = detail.message;
+                } else if (detail.path[0] === 'inputThree') {
+                    validationErrors['Input Three'] = detail.message;
+                }
+            });
+            setErrors(validationErrors);
+        } else {
+            setErrors({});
+            search(debounceSearchQuery);
+        }
     }, [debounceSearchQuery]);
 
     const handleChange = e => {
@@ -46,29 +69,6 @@ const Search = () => {
         }
     }
 
-    const handleKeyDown = e => {
-        if (e.target.name === 'inputOne' && inputOne) {
-            setInputOne(prevValue => prevValue.slice(0, prevValue.length));
-            return;
-        } else if (inputOne.length === 0) {
-            return;
-        }
-
-        if (e.target.name === 'inputTwo' && inputTwo) {
-            setInputTwo(prevValue => prevValue.slice(0, prevValue.length));
-            return;
-        } else if (inputTwo.length === 0) {
-            e.target.previousElementSibling.focus();
-        }
-
-        if (e.target.name === 'inputThree' && inputThree) {
-            setInputThree(prevValue => prevValue.slice(0, prevValue.length));
-            return;
-        } else if (inputThree.length === 0) {
-            e.target.previousElementSibling.focus();
-        }
-    }
-
     const handleSubmit = e => {
         search(debounceSearchQuery);
     }
@@ -80,7 +80,7 @@ const Search = () => {
                 <div className="inputs">
                     <input
                         type="text"
-                        className="search"
+                        className={`search${errors['Input One'] ? ' error' : ''}`}
                         value={inputOne}
                         name="inputOne"
                         onChange={e => handleChange(e)}
@@ -90,7 +90,7 @@ const Search = () => {
                     -
                     <input
                         type="text"
-                        className="search"
+                        className={`search${errors['Input Two'] ? ' error' : ''}`}
                         value={inputTwo}
                         name="inputTwo"
                         onChange={e => handleChange(e)}
@@ -100,7 +100,7 @@ const Search = () => {
                     -
                     <input
                         type="text"
-                        className="search"
+                        className={`search${errors['Input Three'] ? ' error' : ''}`}
                         value={inputThree}
                         name="inputThree"
                         onChange={e => handleChange(e)}
@@ -108,6 +108,9 @@ const Search = () => {
                         maxLength={2}
                     />
                 </div>
+                {errors['Input One'] && <p className="error">{errors?.['Input One']}</p>}
+                {errors['Input Two'] && <p className="error">{errors?.['Input Two']}</p>}
+                {errors['Input Three'] && <p className="error">{errors?.['Input Three']}</p>}
             </div>
         </form>
     )

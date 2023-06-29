@@ -6,6 +6,7 @@ import { countryNamesAndCodes } from '../utils/countryNamesAndCodes';
 import { countriesAndCurrencies } from '../utils/countriesAndCurrencies';
 import { currencyNamesAndCodes } from '../utils/currencyNamesAndCodes';
 import { creditPayment, typeOfAccount, typeOfCustomer } from '../utils/accountTypes';
+import createClientSchema from '../validations/createClientSchema';
 
 const CreateClient = () => {
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -29,6 +30,8 @@ const CreateClient = () => {
         type_of_account: '',
         credit_payment: '',
     });
+
+    const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
 
@@ -72,8 +75,20 @@ const CreateClient = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        mutate(data);
-        navigate(-1);
+
+        const { error } = createClientSchema.validate(data);
+
+        if (error) {
+            const validationErrors = {};
+            error.details.forEach((detail) => {
+                validationErrors[detail.path[0]] = detail.message;
+            });
+            setErrors(validationErrors);
+        } else {
+            setErrors({});
+            mutate(data);
+            navigate(-1);
+        }
     }
 
     const handleClick = async () => {
@@ -227,6 +242,15 @@ const CreateClient = () => {
                 </div>
             </div>
             <button className='create-new-client-button' onClick={handleSubmit}>Create New Client Account</button>
+            <div
+                className='error-message'
+            >
+                {Object.entries(errors).map(error => (
+                    <div key={error[0]}>
+                        {error[1]}
+                    </div>
+                ))}
+            </div>
         </div >
     )
 }

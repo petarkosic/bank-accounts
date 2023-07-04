@@ -529,16 +529,22 @@ p {
 	cursor: pointer;
 }
 
-.client-card {
+.client-card--wrapper {
+	width: 100%;
+	display: flex;
+}
+
+.client-card--container {
+	width: 100%;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
 	gap: 20px;
 }
 
 .client-info {
-	width: 100%;
-	height: 300px;
+	height: 400px;
+	padding: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -548,40 +554,53 @@ p {
 	border-radius: 8px;
 }
 
-/* .client-fullname {
+.credit-card--info {
+	width: 90%;
+	height: 100%;
+	padding: 20px;
+	display: flex;
+	border-radius: 8px;
+	gap: 40px;
+}
+
+.credit-card--info.premium {
+	background: linear-gradient(30deg, rgb(126, 51, 16), rgb(214, 214, 73));
+}
+
+.credit-card--info.regular {
+	background: linear-gradient(30deg, rgb(37, 37, 151), #75aadf);
+}
+
+.client-fullname {
 	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 }
 
-.premium {
-	position: absolute;
-	top: 10px;
-	right: -10%;
-	width: 10px;
-	height: 10px;
-	background: yellow;
-	border-radius: 50%;
+.client-fullname h1 {
+	font-size: 1.5rem;
 }
-
-.regular {
-	position: absolute;
-	top: 10px;
-	right: -10%;
-	width: 10px;
-	height: 10px;
-	background: aqua;
-	border-radius: 50%;
-} */
 
 .account-number {
+	font-size: 1.5rem;
 	font-weight: bold;
 }
 
 .button-switch {
-	width: 150px;
-	background: black;
-	color: white;
+	width: max-content;
+	margin: 10px 0;
+	padding: 10px;
+	border: none;
+	display: flex;
+	align-self: flex-end;
 	border-radius: 8px;
 	font-size: 1.25rem;
+	font-weight: bold;
+	background: linear-gradient(45deg, #aaa, #2c3e50);
+	color: white;
 }
 
 .button-switch:hover {
@@ -591,16 +610,17 @@ p {
 .type {
 	width: 100%;
 	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: flex-end;
 	gap: 20px;
-	justify-content: center;
 }
 
 .address {
 	width: 100%;
-	margin-top: 20px;
 	display: flex;
-	gap: 20px;
 	justify-content: center;
+	gap: 20px;
 }
 
 .address-button {
@@ -616,8 +636,8 @@ p {
 }
 
 .client-money {
-	width: 100%;
-	height: 300px;
+	height: 400px;
+	padding: 20px;
 	background: #555;
 	color: white;
 	display: flex;
@@ -627,12 +647,7 @@ p {
 	border-radius: 8px;
 }
 
-.client-money p {
-	padding: 0 40px;
-}
-
 .money-deposit {
-	width: 100%;
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -643,8 +658,7 @@ p {
 }
 
 .money-deposit button {
-	height: 70%;
-	width: 350px;
+	width: max-content;
 	padding: 0 20px;
 	background: black;
 	color: white;

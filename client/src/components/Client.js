@@ -80,13 +80,17 @@ function Client() {
                     <div className="client-card--container">
                         <div className='client-info'>
                             <div className={`credit-card--info ${typeOfCustomer}`}>
-                                <div className="client-fullname">
-                                    <p className='account-number'>{client.account_number}</p>
-                                    <h1>{client.first_name}{' '}{client.last_name}</h1>
+                                <div className="card-left">
+                                    <div className="client-fullname">
+                                        <p className='account-number'>{client.account_number}</p>
+                                        <h1>{client.first_name}{' '}{client.last_name}</h1>
+                                    </div>
                                 </div>
-                                <div className="type">
-                                    <p>{client.type_of_account}</p>
-                                    <p>{client.type_of_customer}</p>
+                                <div className="card-right">
+                                    <div className="type">
+                                        <p>{client.type_of_account}</p>
+                                        <p>{client.type_of_customer}</p>
+                                    </div>
                                 </div>
                             </div>
                             <button className="button-switch" onClick={() => setOpenCustomerModal(true)}>Switch to {typeOfCustomer === 'premium' ? 'regular' : 'premium'}</button>

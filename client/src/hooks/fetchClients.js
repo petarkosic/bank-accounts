@@ -26,7 +26,7 @@ export async function depositOrWithdraw(clientData) {
 };
 
 export async function searchByAccountNumber(accountNumber) {
-    const { data } = await api.get(`/clients/search?q=${Number(accountNumber)}`);
+    const { data } = await api.get(`/clients/search?q=${encodeURIComponent(accountNumber)}`);
     return data;
 };
 

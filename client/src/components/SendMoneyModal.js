@@ -23,7 +23,7 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (data?.[0].deposited_amount < amountOfMoney) {
+        if (Number(data?.[0].deposited_amount) < Number(amountOfMoney)) {
             setFundsError(true);
             setTimeout(() => {
                 setFundsError(false);
@@ -42,7 +42,7 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
         const dataToSend = {
             from: currentClientId,
             to: user?.client?.client_id,
-            amount: amountOfMoney > 10000 ? String(Number(amountOfMoney) + (Number(amountOfMoney) * FEE)) : amountOfMoney,
+            amount: amountOfMoney >= 10000 ? String(Number(amountOfMoney) + (Number(amountOfMoney) * FEE)) : amountOfMoney,
         }
         if (!fundsError) {
             mutate(dataToSend);

@@ -93,7 +93,10 @@ function Client() {
                                     </div>
                                 </div>
                             </div>
-                            <button className="button-switch" onClick={() => setOpenCustomerModal(true)}>Switch to {typeOfCustomer === 'premium' ? 'regular' : 'premium'}</button>
+                            <div className="switch-account-container">
+                                <button className={`button-switch ${typeOfCustomer}`} onClick={() => setOpenCustomerModal(true)}>Switch to {typeOfCustomer === 'premium' ? 'regular' : 'premium'}
+                                </button>
+                            </div>
                             {openCustomerModal &&
                                 <SwitchCustomerModal
                                     setOpenCustomerModal={setOpenCustomerModal}

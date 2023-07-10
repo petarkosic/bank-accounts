@@ -12,6 +12,7 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const [amountOfMoney, setAmountOfMoney] = useState(0);
     const [fundsError, setFundsError] = useState(false);
     const [currencyCodeError, setCurrencyCodeError] = useState(false);
+    const [isSameAccount, setIsSameAccount] = useState(false);
 
     const { user } = useSearchClientContext();
 
@@ -23,18 +24,31 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        let timeoutId;
+
         if (Number(data?.[0].deposited_amount) < Number(amountOfMoney)) {
             setFundsError(true);
-            setTimeout(() => {
+            timeoutId = setTimeout(() => {
                 setFundsError(false);
+                clearTimeout(timeoutId);
             }, 3000);
             return;
         }
 
         if (data?.[0].currency_code !== user?.client?.currency_code) {
             setCurrencyCodeError(true);
-            setTimeout(() => {
+            timeoutId = setTimeout(() => {
                 setCurrencyCodeError(false);
+                clearTimeout(timeoutId);
+            }, 3000);
+            return;
+        }
+
+        if (currentClientId === user?.client?.client_id) {
+            setIsSameAccount(true);
+            timeoutId = setTimeout(() => {
+                setIsSameAccount(false);
+                clearTimeout(timeoutId);
             }, 3000);
             return;
         }
@@ -119,6 +133,9 @@ export const SendMoneyModal = ({ setOpenSendMoneyModal, data }) => {
                         )}
                         {currencyCodeError && (
                             <p className='funds-error'>Currencies Do Not Match</p>
+                        )}
+                        {isSameAccount && (
+                            <p className='funds-error'>Accounts Are The Same</p>
                         )}
                     </div>
                     <div className="modal-bottom">

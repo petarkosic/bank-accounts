@@ -1,12 +1,14 @@
 import pool from './../db/db.js'
 import { generateAccountNumber, parseNumber } from '../utils/index.js';
-import { createRedisClient, getRedisClient } from './../services/redisService.js'
+import RedisService from './../services/redisService.js';
 
 let redis;
+
 async function runRedis() {
-    await createRedisClient();
-    redis = await getRedisClient()
+    await RedisService.createRedisClient();
+    redis = RedisService.getRedisClient();
 }
+
 runRedis();
 
 export const getAllClients = async (req, res, next) => {

@@ -1,36 +1,44 @@
 import { createClient } from "redis";
 import { config } from 'dotenv';
-config();
 
-let _client;
-
-export async function createRedisClient() {
-    if (_client) return _client;
-    try {
-        const client = createClient({
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT,
-        });
-        client.on('error', (err) => {
-            handleRedisError(err, client);
-        });
-        await client.connect();
-        console.log('Redis client connected');
-        _client = client;
+class RedisClient {
+    constructor() {
+        config();
+        this._client = null;
     }
-    catch (error) {
-        console.error(error);
+
+    async createRedisClient() {
+        if (this._client) {
+            return this._client;
+        }
+
+        try {
+            const client = createClient({
+                host: process.env.REDIS_HOST,
+                port: process.env.REDIS_PORT,
+            });
+            client.on('error', (err) => {
+                this.handleRedisError(err, client);
+            });
+            await client.connect();
+            console.log('Redis client connected');
+            this._client = client;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    getRedisClient() {
+        if (this._client == null) {
+            throw new Error('Redis client not connected');
+        }
+        return this._client;
+    }
+
+    handleRedisError(err, client) {
+        client.quit();
+        console.error(err);
     }
 }
 
-export function getRedisClient() {
-    if (_client == undefined) {
-        throw new Error('Redis client not connected');
-    }
-    return _client;
-}
-
-function handleRedisError(err, client) {
-    client.quit();
-    console.error(err);
-}
+export default new RedisClient();

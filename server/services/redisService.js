@@ -1,7 +1,7 @@
 import { createClient } from "redis";
 import { config } from 'dotenv';
 
-class RedisClient {
+class RedisService {
     constructor() {
         config();
         this._client = null;
@@ -41,4 +41,4 @@ class RedisClient {
     }
 }
 
-export default new RedisClient();
+export default new RedisService();

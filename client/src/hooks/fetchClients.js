@@ -21,7 +21,7 @@ export async function switchAccount(clientData) {
 };
 
 export async function depositOrWithdraw(clientData) {
-    const { data } = await api.put(`/clients/deposit/${clientData.client_id}`, clientData);
+    const { data } = await api.put(`/money-transfer/deposit/${clientData.client_id}`, clientData);
     return data;
 };
 
@@ -31,7 +31,7 @@ export async function searchByAccountNumber(accountNumber) {
 };
 
 export async function sendMoney(moneyData) {
-    const { data } = await api.post(`/clients/send-money`, moneyData);
+    const { data } = await api.post(`/money-transfer/send-money`, moneyData);
     return data;
 };
 

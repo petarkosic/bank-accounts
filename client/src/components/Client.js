@@ -13,6 +13,7 @@ function Client() {
     const [openSendMoneyModal, setOpenSendMoneyModal] = useState(false);
     const [typeOfCustomer, setTypeOfCustomer] = useState();
     const [changeAmount, setChangeAmount] = useState(0);
+    const [withdrawError, setWithdrawError] = useState(false);
 
     const { clientId } = useParams();
     const navigate = useNavigate();
@@ -29,6 +30,12 @@ function Client() {
         }
     });
 
+    if (openSendMoneyModal) {
+        depositWithdrawButtonRef.current.style.display = 'block'
+        depositWithdrawInputRef.current.style.display = 'none'
+        depositWithdrawSubmitButton.current.style.display = 'none'
+    }
+
     const handleShowInput = e => {
         depositWithdrawButtonRef.current.style.display = 'none'
         depositWithdrawInputRef.current.style.display = 'block'
@@ -39,10 +46,22 @@ function Client() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setWithdrawError(false);
 
         const dataToSend = {
             client_id: clientId,
             deposited_amount: Number(data?.[0].deposited_amount) + Number(changeAmount)
+        }
+
+        if (Number(changeAmount) < 0) {
+            if (Math.abs(Number(changeAmount)) > Number(data?.[0].deposited_amount)) {
+                setWithdrawError(true);
+                let timeoutId = setTimeout(() => {
+                    setWithdrawError(false);
+                    clearTimeout(timeoutId);
+                }, 3000);
+                return;
+            }
         }
 
         mutate(dataToSend);
@@ -122,7 +141,7 @@ function Client() {
                             <p>Card limit: {client.card_limit}</p>
                             <p>Credit payment: {client.credit_payment}</p>
                             <div className="money-deposit">
-                                <p>Deposited amount: {client.deposited_amount?.slice(0, -2)}</p>
+                                <p>Balance: {client.deposited_amount?.slice(0, -2)}</p>
                                 <button
                                     ref={depositWithdrawButtonRef}
                                     onClick={e => handleShowInput(e)}
@@ -134,8 +153,11 @@ function Client() {
                                         type="text"
                                         ref={depositWithdrawInputRef}
                                         onChange={e => setChangeAmount(e.target.value)}
-                                        style={{ display: 'none' }}
+                                        style={{ display: 'none', border: withdrawError ? '1px solid red' : 'none' }}
                                         placeholder='Amount' />
+                                    {withdrawError && (
+                                        <p className='error-message withdraw-error'>Cannot withdraw more than your balance</p>
+                                    )}
                                     <button
                                         type='submit'
                                         ref={depositWithdrawSubmitButton}

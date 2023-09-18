@@ -1,7 +1,12 @@
 import { Router } from 'express';
-// import { getAllClients } from './../controllers/clientsController.js';
+import {
+    depositOrWithdraw,
+    sendMoney
+} from './../controllers/moneyTransferController.js';
 
 const router = Router();
 
+router.put('/deposit/:id', depositOrWithdraw);
+router.post('/send-money', sendMoney);
 
 export default router;

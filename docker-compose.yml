@@ -1,0 +1,67 @@
+version: '3.9'
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: ba-server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - '5000:5000'
+    volumes:
+      - /app/node_modules
+      - ./server:/usr/src/app
+    networks:
+      - ba-net
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: ba-client
+    depends_on:
+      - server
+    ports:
+      - '3000:80'
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    networks:
+      - ba-net
+
+  postgres:
+    image: 'postgres:latest'
+    container_name: ba-postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - ba-net
+
+  redis:
+    image: redis
+    container_name: ba-redis
+    ports:
+      - '6379:6379'
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_ARGS=--save 3602 1 --save 302 30 --save 62 10000
+    volumes:
+      - ./redis-data:/data
+    networks:
+      - ba-net
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  ba-net:

@@ -1,5 +1,7 @@
 CREATE DATABASE bank_accounts;
 
+\c bank_accounts;
+
 
 CREATE TYPE type_of_customer AS ENUM ('regular', 'premium');
 CREATE TYPE type_of_account AS ENUM ('credit', 'debit');
@@ -14,8 +16,6 @@ CREATE TABLE clients (
     PRIMARY KEY (client_id)
 );
 
--- INSERT INTO clients (client_id, first_name, last_name, date_of_birth, list_of_accounts) VALUES (1, 'John', 'Doe', '1996-12-01', '{123, 456, 789}');
-
 CREATE TABLE client_address (
     client_address_id SERIAL,
     client_id SERIAL,
@@ -28,8 +28,6 @@ CREATE TABLE client_address (
     FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
 
--- INSERT INTO client_address (client_id, country_name, country_code, street_name, house_number, postal_code) VALUES (1, 'Serbia', 'SRB', 'Blablabla', '90', '11000');
-
 CREATE TABLE accounts (
     account_id SERIAL,
     client_id SERIAL,
@@ -40,8 +38,6 @@ CREATE TABLE accounts (
     PRIMARY KEY (account_id),
     FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
-
--- INSERT INTO accounts (account_id, client_id, account_number, currency_name, currency_code, deposited_amount) VALUES (1, 1, '412-142-23', 'dinar', 'RSD', 1200);
 
 CREATE TABLE accounts_limit (
     accounts_limit_id SERIAL, 
@@ -54,15 +50,6 @@ CREATE TABLE accounts_limit (
     PRIMARY KEY (accounts_limit_id),
     FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
-
--- INSERT INTO accounts_limit (account_id, type_of_customer, type_of_account, credit_payment) VALUES (1, 'premium', 'credit', 'yearly');
-
-UPDATE accounts_limit
-SET card_limit = 
-CASE WHEN type_of_account = 'debit' THEN 0 WHEN type_of_account = 'credit' AND type_of_customer = 'regular' THEN 5000 WHEN type_of_account = 'credit' AND type_of_customer = 'premium' THEN 20000 END;
-
-UPDATE accounts_limit
-SET withdrawal_fee = CASE WHEN type_of_customer = 'regular' THEN 1 WHEN type_of_customer = 'premium' THEN 0 END;
 
 CREATE OR REPLACE FUNCTION update_card_limit() 
     RETURNS TRIGGER AS $$
@@ -103,3 +90,4 @@ CREATE TRIGGER trigger_update_withdrawal_fee
     BEFORE UPDATE ON accounts_limit
     FOR EACH ROW
     EXECUTE FUNCTION update_withdrawal_fee();
+

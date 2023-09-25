@@ -6,5 +6,8 @@
 
 .env
 
-/redis-data
-/postgres-data
+/redis-data-dev
+/redis-data-prod
+
+/postgres-data-dev
+/postgres-data-prod

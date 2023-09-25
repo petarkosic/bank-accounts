@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    container_name: ba-server-dev
+    image: ba-server-dev
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: ba-client-dev
+    image: ba-client-dev
+    ports:
+      - '3000:3000'
+    environment:
+      - WATCHPACK_POLLING=true # required for hot reloading
+
+  postgres:
+    container_name: ba-postgres-dev
+    volumes:
+      - ./postgres-data-dev:/var/lib/postgresql/data
+      - ./server/db/migrations:/docker-entrypoint-initdb.d
+
+  redis:
+    container_name: ba-redis-dev
+    volumes:
+      - ./redis-data-dev:/data

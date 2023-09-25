@@ -1,9 +1,6 @@
 version: '3.9'
 services:
   server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
     container_name: ba-server
     depends_on:
       - postgres
@@ -17,14 +14,9 @@ services:
       - ba-net
 
   client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
     container_name: ba-client
     depends_on:
       - server
-    ports:
-      - '3000:80'
     volumes:
       - /app/node_modules
       - ./client:/app
@@ -39,9 +31,6 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-      - ./server/db/migrations:/docker-entrypoint-initdb.d
     networks:
       - ba-net
 
@@ -54,8 +43,6 @@ services:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_ARGS=--save 3602 1 --save 302 30 --save 62 10000
-    volumes:
-      - ./redis-data:/data
     networks:
       - ba-net
 

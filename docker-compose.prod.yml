@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    container_name: ba-server
+    image: ba-server-prod
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    container_name: ba-client
+    image: ba-client-prod
+    ports:
+      - '3000:80'
+
+  postgres:
+    container_name: ba-postgres
+    volumes:
+      - ./postgres-data-prod:/var/lib/postgresql/data
+      - ./server/db/migrations/01_init.sql:/docker-entrypoint-initdb.d/01_init.sql
+
+  redis:
+    container_name: ba-redis
+    volumes:
+      - ./redis-data-prod:/data

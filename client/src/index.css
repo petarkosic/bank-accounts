@@ -9,6 +9,8 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background: #333;
+	max-width: 1440px;
+	margin: 0 auto;
 }
 
 code {
@@ -21,6 +23,12 @@ code {
 	margin: 0;
 	padding: 40px 80px;
 	box-sizing: border-box;
+}
+
+@media (max-width: 552px) {
+	.wrapper {
+		padding: 40px 20px;
+	}
 }
 
 h1 {

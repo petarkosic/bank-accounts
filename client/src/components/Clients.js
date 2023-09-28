@@ -23,10 +23,10 @@ function Clients() {
             <div className="clients-heading">
                 <p>Client Name</p>
                 <p>Account Number</p>
-                <p>Type Of Account</p>
-                <p>Type Of Customer</p>
-                <p>Deposited Amount</p>
-                <p>Currency Name</p>
+                <p className='hide-on-mobile'>Type Of Account</p>
+                <p className='hide-on-mobile'>Type Of Customer</p>
+                <p>Balance</p>
+                <p className='hide-on-mobile'>Currency Name</p>
                 <p>Currency Code</p>
                 <div></div>
             </div>
@@ -46,10 +46,10 @@ function Clients() {
                                     <h2>{cl.last_name}</h2>
                                 </div>
                                 <p>{cl.account_number}</p>
-                                <p>{cl.type_of_account}</p>
-                                <p>{cl.type_of_customer}</p>
+                                <p className='hide-on-mobile'>{cl.type_of_account}</p>
+                                <p className='hide-on-mobile'>{cl.type_of_customer}</p>
                                 <p>{cl.deposited_amount?.slice(0, -2)}</p>
-                                <p>{cl.currency_name}</p>
+                                <p className='hide-on-mobile'>{cl.currency_name}</p>
                                 <p>{cl.currency_code}</p>
                                 <Link className="button-view-more" to={`/${cl.client_id}`}>View More</Link>
                             </div>
@@ -72,10 +72,10 @@ function Clients() {
                             <h2>{client.last_name}</h2>
                         </div>
                         <p>{client.account_number}</p>
-                        <p>{client.type_of_account}</p>
-                        <p>{client.type_of_customer}</p>
+                        <p className='hide-on-mobile'>{client.type_of_account}</p>
+                        <p className='hide-on-mobile'>{client.type_of_customer}</p>
                         <p>{client.deposited_amount?.slice(0, -2)}</p>
-                        <p>{client.currency_name}</p>
+                        <p className='hide-on-mobile'>{client.currency_name}</p>
                         <p>{client.currency_code}</p>
                         <Link className="button-view-more" to={`/${client.client_id}`}>View More</Link>
                     </div>

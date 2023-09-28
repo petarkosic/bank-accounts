@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { customersToReachCardLimit, showPremiumCustomersByCountry } from '../hooks/fetchClients';
 import { countryNamesAndCodes } from '../utils/countryNamesAndCodes';
 import { useQuery } from '@tanstack/react-query';
+import { formatNumber } from '../utils/formatNumber';
 
 // TODO: show customers that are about to reach credit card limit (10% buffer left)
 const Dashboard = () => {
@@ -49,22 +50,25 @@ const Dashboard = () => {
                 </select>
                 {premiumCustomers?.country_name && premiumCustomers?.country_name !== '------Select a Country------' && (
                     <div className='premium-customers'>
-                        <p>The number of premium customers in</p>
-                        <span>{premiumCustomers?.country_name}</span>
-                        <p>is</p>
-                        <span>{premiumCustomers?.count}</span>
+                        <p>The number of premium customers in{' '}
+                            <span>{premiumCustomers?.country_name}</span>
+                            {' '}is{' '}
+                            <span>{premiumCustomers?.count}</span>
+                        </p>
                     </div>
                 )}
             </div>
             <p className='customers-card-limit-label'>Customers about to reach credit card limit</p>
             <div className='customers-card-limit'>
                 {data?.customersToReachCardLimit?.map(customer => (
-                    <div key={customer.id} className='customer-card-limit'>
+                    <div key={customer.client_id} className={`customer-card-limit ${customer.type_of_customer === 'premium' ? 'customer-card-limit-premium' : ''}`}>
                         <p>{customer.first_name} {customer.last_name}</p>
-                        <p>Account number: {customer.account_number}</p>
-                        <p>Deposited amount: {customer.deposited_amount?.slice(0, -2)}</p>
+                        <p>{customer.account_number}</p>
+                        <p>Balance: {formatNumber(customer.deposited_amount)}</p>
                         <p>Currency: {customer.currency_name}</p>
-                        <p>Card limit: {customer.card_limit}</p>
+                        <p>Card limit: {formatNumber(customer.card_limit)}</p>
+                        <p>Remaining credit: {formatNumber(customer.remaining_credit)}</p>
+                        <Link className="card-limit-view-more" to={`/${customer.client_id}`}>View More</Link>
                     </div>
                 ))}
 

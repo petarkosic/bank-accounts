@@ -92,22 +92,25 @@ class AccountService {
 
             // if database supports clients with single accounts only
             let quertString = `
-            SELECT c.client_id, c.first_name, c.last_name, al.card_limit, a.deposited_amount, a.account_number, a.currency_name
-            FROM clients c
-            JOIN accounts a ON c.client_id = a.client_id
-            JOIN accounts_limit al ON a.account_id = al.account_id
-            WHERE a.deposited_amount >= al.card_limit * 0.9;
-            `;
-
-            // if database supports clients with multiple accounts
-            // let query = `
-            // SELECT c.client_id, c.first_name, c.last_name, al.card_limit, SUM(a.deposited_amount) AS total_deposited_amount
-            // FROM clients c
-            // JOIN accounts a ON c.client_id = a.client_id
-            // JOIN accounts_limit al ON a.account_id = al.account_id
-            // GROUP BY c.client_id, c.first_name, c.last_name, al.card_limit
-            // HAVING SUM(a.deposited_amount) >= al.card_limit * 0.9;
-            // `;
+            SELECT 
+                c.client_id AS client_id,
+                c.first_name AS first_name,
+                c.last_name AS last_name,
+                al.card_limit AS card_limit,
+                al.type_of_customer AS type_of_customer,
+                a.deposited_amount AS deposited_amount,
+                a.account_number AS account_number,
+                a.currency_name AS currency_name,
+                (al.card_limit - a.deposited_amount) AS remaining_credit
+            FROM 
+                clients c
+            JOIN 
+                accounts a ON c.client_id = a.client_id
+            JOIN 
+                accounts_limit al ON a.account_id = al.account_id
+            WHERE 
+                a.deposited_amount >= al.card_limit * 0.9 AND
+                a.deposited_amount < al.card_limit;`;
 
             const data = await dbClient.query(quertString);
 

@@ -490,6 +490,30 @@ p {
 	transition: all 0.2s ease-in-out;
 }
 
+.dashboard-link span {
+	display: inline;
+}
+
+@media (max-width: 1000px) {
+	.dashboard-link {
+		width: max-content;
+		margin-left: 0;
+		padding: 0 0.5rem;
+	}
+
+	.dashboard-link span {
+		display: none;
+	}
+
+	.dashboard-link a::before {
+		content: '\f201';
+		font-family: FontAwesome;
+		font-size: 1.5rem;
+		display: inline-block;
+		margin: 0 10px;
+	}
+}
+
 .dashboard-link a:hover {
 	color: white;
 }
@@ -535,8 +559,13 @@ p {
 
 .clients-client {
 	width: 100%;
+	height: max-content;
 	border-radius: 8px;
 	overflow: hidden;
+}
+
+.clients-client:nth-child(odd) {
+	background: rgba(0, 0, 0, 0.2);
 }
 
 .clients-client-bg {
@@ -560,7 +589,7 @@ p {
 	justify-content: space-between;
 	align-items: center;
 	color: white;
-	height: 100px;
+	height: 80px;
 }
 
 .client-name:hover {
@@ -582,6 +611,7 @@ p {
 	color: white;
 	font-size: 1.25rem;
 	font-weight: bold;
+	text-decoration: none;
 	border-radius: 8px;
 }
 

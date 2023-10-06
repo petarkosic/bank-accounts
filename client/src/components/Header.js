@@ -13,7 +13,7 @@ const Header = () => {
             {location.pathname === '/' &&
                 <>
                     <div className="dashboard-link">
-                        <Link to={'/dashboard'}>View Dashboard</Link>
+                        <Link to={'/dashboard'}><span>View Dashboard</span></Link>
                     </div>
                     <Search />
                     <Link className="client-add" to={'/create-client'}>Add Client</Link>

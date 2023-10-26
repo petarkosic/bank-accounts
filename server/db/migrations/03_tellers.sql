@@ -11,16 +11,16 @@ CREATE TABLE tellers(
     PRIMARY KEY (teller_id)
 );
 
-CREATE OR REPLACE FUNCTION generate_login_id()
+CREATE OR REPLACE FUNCTION generate_login_id() 
 RETURNS VARCHAR(7) AS $$
 DECLARE
-    characters VARCHAR(62) := 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    result VARCHAR(7) := '';
-    i INT;
+  chars text[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}';
+  result text := '';
+  i integer := 0;
 BEGIN
-    FOR i IN 1..7 LOOP
-        result := result || substr(characters, (gen_random_bytes(1)::int % 62) + 1, 1);
-    END LOOP;
-    RETURN result;
+  FOR i IN 1..7 LOOP
+    result := result || chars[ceil(61 * random())];
+  END LOOP;
+  RETURN result;
 END;
 $$ LANGUAGE plpgsql;

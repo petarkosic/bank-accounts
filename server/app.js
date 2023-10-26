@@ -4,6 +4,7 @@ import morgan from 'morgan';
 
 import clientsRoute from './routes/clientsRoute.js';
 import moneyTransferRoute from './routes/moneyTransferRoute.js';
+import tellersRoute from './routes/tellersRoute.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 
 app.use('/clients', clientsRoute);
 app.use('/money-transfer', moneyTransferRoute);
+app.use('/tellers', tellersRoute);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

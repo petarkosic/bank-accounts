@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import clientsRoute from './routes/clientsRoute.js';
 import moneyTransferRoute from './routes/moneyTransferRoute.js';
 import tellersRoute from './routes/tellersRoute.js';
+import verifyToken from './middleware/verifyToken.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -18,8 +19,8 @@ app.get('/', (req, res) => {
     res.json({ message: 'Hello World!' })
 })
 
-app.use('/clients', clientsRoute);
-app.use('/money-transfer', moneyTransferRoute);
+app.use('/clients', verifyToken, clientsRoute);
+app.use('/money-transfer', verifyToken, moneyTransferRoute);
 app.use('/tellers', tellersRoute);
 
 app.listen(PORT, () => {

@@ -1,8 +1,11 @@
 import { config } from 'dotenv';
 import bcrypt from 'bcrypt';
+import jsonwebtoken from 'jsonwebtoken';
 import pool from '../db/db.js';
 
 config();
+
+const jwt = jsonwebtoken;
 
 class TellerService {
     constructor() {
@@ -50,7 +53,46 @@ class TellerService {
     }
 
     async login(dbClient, login_id, password) {
-        // TODO
+        try {
+            await dbClient.query('BEGIN');
+
+            const queryString = `SELECT teller_id, login_id, first_name, last_name, email, password, registered_at FROM tellers WHERE login_id = $1;`;
+
+            const user = await dbClient.query(queryString, [login_id]);
+
+            if (user.rows.length === 0) {
+                return { message: 'Invalid Credentials' };
+            }
+
+            const validPassword = await bcrypt.compare(
+                password,
+                user.rows[0].password
+            );
+
+            if (!validPassword) {
+                return { message: 'Invalid Credentials' };
+            }
+
+            const { login_id: loginID, first_name, last_name, email } = user.rows[0];
+
+            await dbClient.query('COMMIT');
+
+            const accessToken = generateAccessToken(user.rows[0]);
+
+            return {
+                login_id: loginID,
+                first_name,
+                last_name,
+                email,
+                accessToken,
+                message: 'Login Successful',
+            }
+
+        } catch (error) {
+            await dbClient.query('ROLLBACK');
+            console.log(error.message);
+            throw new Error('Server error')
+        }
     }
 
     async logout(dbClient) {
@@ -60,4 +102,14 @@ class TellerService {
 
 
 export default new TellerService();
+
+function generateAccessToken(user) {
+    return jwt.sign(
+        { userId: user.user_id },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: '1h',
+        }
+    );
+}
 

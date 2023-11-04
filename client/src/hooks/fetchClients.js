@@ -99,3 +99,18 @@ export async function customersToReachCardLimit() {
     });
     return data;
 }
+
+export async function login(login_id, password) {
+    const { data } = await api.post('/tellers/login', {
+        login_id,
+        password
+    })
+
+    if (data.message === 'Invalid Credentials') {
+        throw new Error('Invalid Credentials');
+    }
+
+    localStorage.setItem('accessToken', data.accessToken);
+
+    return data;
+}

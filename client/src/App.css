@@ -100,6 +100,8 @@ p {
 .header .client-add {
 	width: 150px;
 	height: 60%;
+	margin-left: 10px;
+	padding: 0 1rem;
 	background: black;
 	color: white;
 	border-radius: 8px;
@@ -108,6 +110,7 @@ p {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	text-align: center;
 }
 
 .header .client-add:hover {
@@ -575,6 +578,29 @@ p {
 
 .dashboard-link a:hover {
 	color: white;
+}
+
+.logout {
+	width: max-content;
+	height: 60%;
+	padding: 0 1rem;
+	background: #2c3e50;
+	color: #75aadf;
+	border: 1px solid #75aadf;
+	border-radius: 8px;
+	font-size: 1.25rem;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.1s ease-in-out;
+}
+
+.logout:hover {
+	cursor: pointer;
+	background: #3498db;
+	color: #2c3e50;
+	border: 1px solid #3498db;
 }
 
 .premium-customers {

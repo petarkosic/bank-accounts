@@ -46,6 +46,7 @@ export const createNewTeller = async (req, res) => {
             res.status(200).json({
                 success: true,
                 message: response.message,
+                login_id: response.login_id
             });
         }
 

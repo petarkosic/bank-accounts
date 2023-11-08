@@ -27,7 +27,7 @@ class TellerService {
 
             const emailCheckQuery = 'SELECT COUNT(*) FROM tellers WHERE email = $1';
             const emailCheckResult = await dbClient.query(emailCheckQuery, [email]);
-            const emailExists = emailCheckResult?.rows[0].lenght > 0;
+            const emailExists = emailCheckResult?.rows[0].length > 0;
 
             if (emailExists) {
                 await dbClient.query('ROLLBACK');
@@ -37,13 +37,17 @@ class TellerService {
             const queryString = `
                 INSERT INTO tellers (login_id, first_name, last_name, email, password)
                 VALUES (generate_login_id(), $1, $2, $3, $4)
+                RETURNING login_id
             `;
 
-            await dbClient.query(queryString, [first_name, last_name, email, hashedPassword])
+            let result = await dbClient.query(queryString, [first_name, last_name, email, hashedPassword])
 
             await dbClient.query('COMMIT');
 
-            return { message: 'Teller Created' };
+            return {
+                message: 'Teller Created',
+                login_id: result.rows[0].login_id
+            };
 
         } catch (error) {
             await dbClient.query('ROLLBACK');

@@ -14,12 +14,14 @@ runRedis();
 
 export const getAllClients = async (req, res) => {
     const dbClient = await ClientService.connect();
+    const { page = 1, pageSize = 10 } = req.query;
 
     try {
-        const clients = await ClientService.getAllClients(dbClient);
+        const clients = await ClientService.getAllClients(dbClient, page, pageSize);
 
         res.status(200).json({
-            clients: clients.rows,
+            clients: clients.clients.rows,
+            nextPage: clients.nextPage
         });
     } catch (err) {
         console.error(err.message);

@@ -12,19 +12,28 @@ class ClientService {
         return this.pool.connect();
     }
 
-    async getAllClients(dbClient) {
+    async getAllClients(dbClient, page, pageSize) {
+
+        const offset = (page - 1) * pageSize;
+
         try {
             await dbClient.query('BEGIN');
 
             let queryString = `
-            SELECT clients.client_id, first_name, last_name, date_of_birth, list_of_accounts, type_of_customer, type_of_account, account_number, currency_name, currency_code, deposited_amount FROM clients LEFT JOIN client_address ON clients.client_id = client_address.client_id LEFT JOIN accounts ON accounts.client_id = clients.client_id LEFT JOIN accounts_limit ON accounts.account_id = accounts_limit.account_id;
+            SELECT clients.client_id, first_name, last_name, date_of_birth, list_of_accounts, type_of_customer, type_of_account, account_number, currency_name, currency_code, deposited_amount FROM clients LEFT JOIN client_address ON clients.client_id = client_address.client_id LEFT JOIN accounts ON accounts.client_id = clients.client_id LEFT JOIN accounts_limit ON accounts.account_id = accounts_limit.account_id LIMIT $1 OFFSET $2;
             `;
 
-            const clients = await dbClient.query(queryString);
+            const clients = await dbClient.query(queryString, [pageSize, offset]);
+
+            const countQuery = 'SELECT COUNT(*) FROM clients';
+            const countResult = await pool.query(countQuery);
+            const totalCount = parseInt(countResult.rows[0].count, 10);
+
+            const nextPage = page * pageSize < totalCount ? parseInt(page, 10) + 1 : null;
 
             await dbClient.query('COMMIT');
 
-            return clients;
+            return { clients, nextPage };
 
         } catch (error) {
             await dbClient.query('ROLLBACK');

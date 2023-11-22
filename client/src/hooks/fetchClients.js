@@ -1,12 +1,12 @@
 import api from './../api/bankApi';
 
-export async function fetchClients() {
-    const { data } = await api.get('/clients', {
+export async function fetchClients({ pageParam = 1 }) {
+    const { data } = await api.get(`/clients?page=${pageParam}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
     });
-    return data.clients;
+    return data;
 };
 
 export async function fetchClient(id) {

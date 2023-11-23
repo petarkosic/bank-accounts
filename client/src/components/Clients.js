@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useSearchClientContext } from '../context/SearchClientContext';
 
 function Clients() {
-    const { data, error, isError, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(['clients'], fetchClients, {
+    const { data, error, isError, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(['clients'], fetchClients, {
         refetchOnWindowFocus: false,
         getNextPageParam: (lastPage) => lastPage.nextPage,
     });
@@ -106,6 +106,7 @@ function Clients() {
                     </motion.div>
                 ))
             ))}
+            {isFetchingNextPage && <p>Loading more clients...</p>}
         </div >
     );
 }

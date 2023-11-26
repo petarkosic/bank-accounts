@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { login } from '../hooks/fetchClients';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
     const [loginID, setLoginID] = useState('');
@@ -73,6 +73,11 @@ function Login() {
                     </form>
                 </div>
             )}
+            <div className='register-container'>
+                <h2>No login ID?</h2>
+                <p>Register a new teller here</p>
+                <Link to={'/register'}>Register</Link>
+            </div>
         </div>
     );
 }

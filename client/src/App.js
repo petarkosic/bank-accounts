@@ -8,6 +8,7 @@ import CreateClient from './components/CreateClient';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Register } from './components/Register';
 
 function App() {
   const location = useLocation();
@@ -30,6 +31,7 @@ function App() {
             </Route>
 
             <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
           </Routes>
         </AnimatePresence>
       </div>

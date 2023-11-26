@@ -18,11 +18,15 @@ p {
 	display: grid;
 	place-content: center;
 	gap: 1rem;
+	width: max-content;
+	text-align: center;
+	margin: 0 auto;
 }
 
 .login-container h2 {
 	color: white;
 	font-size: 2rem;
+	text-align: left;
 }
 
 .login-container .login-error {
@@ -71,6 +75,86 @@ p {
 	cursor: pointer;
 	background: #3498db;
 	color: white;
+}
+
+.register-container {
+	width: max-content;
+	margin: 0 auto;
+	padding: 2rem;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.register-container a {
+	text-decoration: none;
+	color: #3498db;
+}
+
+.register-form-container {
+	display: grid;
+	place-content: center;
+	gap: 1rem;
+	width: max-content;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.register-form {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+	gap: 1rem;
+}
+
+.register-form-container h2 {
+	color: white;
+	font-size: 2rem;
+	text-align: left;
+}
+
+.register-form-container label {
+	color: white;
+	font-size: 1.5rem;
+}
+
+.register-form-container input {
+	font-size: 1.5rem;
+	text-indent: 1rem;
+}
+
+.register-form-container .label-input {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.register-form-container button {
+	padding: 0.5rem 2rem;
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: #3498db;
+	background: #2c3e50;
+	border: 1px solid #3498db;
+	border-radius: 8px;
+	transition: all 0.1s ease-in-out;
+}
+
+.register-form-container button:hover {
+	cursor: pointer;
+	background: #3498db;
+	color: white;
+}
+
+.register-form-container a {
+	text-decoration: none;
+	color: #3498db;
 }
 
 .header {

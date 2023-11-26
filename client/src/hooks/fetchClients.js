@@ -114,3 +114,13 @@ export async function login(login_id, password) {
 
     return data;
 }
+
+export async function createTeller(first_name, last_name, email, password) {
+    const { data } = await api.post('/tellers/create', {
+        first_name,
+        last_name,
+        email,
+        password
+    })
+    return data;
+}

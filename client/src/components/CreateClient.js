@@ -7,6 +7,7 @@ import { countriesAndCurrencies } from '../utils/countriesAndCurrencies';
 import { currencyNamesAndCodes } from '../utils/currencyNamesAndCodes';
 import { creditPayment, typeOfAccount, typeOfCustomer } from '../utils/accountTypes';
 import createClientSchema from '../validations/createClientSchema';
+import { Input } from './Input';
 
 const CreateClient = () => {
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -136,12 +137,31 @@ const CreateClient = () => {
                 <div className="create-client-left">
                     <div className="column">
                         <div className="create-client-inputs">
-                            <label htmlFor="first-name" className='label'>First name</label>
-                            <input type="text" name='first_name' id="first-name" onChange={handleChange} />
-                            <label htmlFor="last-name" className='label'>Last name</label>
-                            <input type="text" name='last_name' id="last-name" onChange={handleChange} />
-                            <label htmlFor="date-of-birth" className='label'>Date of birth</label>
-                            <input type="text" name='date_of_birth' id="date-of-birth" placeholder='YYYY-MM-DD' onChange={handleChange} />
+                            <Input
+                                label={'First name'}
+                                type="text"
+                                id="first-name"
+                                name="first_name"
+                                value={data.first_name}
+                                onChange={handleChange}
+                            />
+                            <Input
+                                label={'Last name'}
+                                type="text"
+                                id="last-name"
+                                name="last_name"
+                                value={data.last_name}
+                                onChange={handleChange}
+                            />
+                            <Input
+                                label={'Date of birth'}
+                                type="text"
+                                id="date-of-birth"
+                                name="date_of_birth"
+                                value={data.date_of_birth}
+                                placeholder='YYYY-MM-DD'
+                                onChange={handleChange}
+                            />
                             <div className='country-selector-wrapper'>
                                 <div className="country-select">
                                     <label htmlFor="country-name" className='label'>Country name</label>
@@ -166,12 +186,31 @@ const CreateClient = () => {
                                 </div>
                             </div>
 
-                            <label htmlFor="street-name" className='label'>Street name</label>
-                            <input type="text" name='street_name' id="street-name" onChange={handleChange} />
-                            <label htmlFor="house-number" className='label'>House number</label>
-                            <input type="text" name='house_number' id="house-number" onChange={handleChange} />
-                            <label htmlFor="postal-code" className='label'>Postal code</label>
-                            <input type="text" name='postal_code' id="postal-code" onChange={handleChange} />
+
+                            <Input
+                                label="Street name"
+                                type="text"
+                                id="street-name"
+                                name="street_name"
+                                value={data.street_name}
+                                onChange={handleChange}
+                            />
+                            <Input
+                                label="House number"
+                                type="text"
+                                id="house-number"
+                                name="house_number"
+                                value={data.house_number}
+                                onChange={handleChange}
+                            />
+                            <Input
+                                label="Postal code"
+                                type="text"
+                                id="postal-code"
+                                name="postal_code"
+                                value={data.postal_code}
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
                 </div>
@@ -207,9 +246,14 @@ const CreateClient = () => {
                                 </div>
                             </div>
 
-                            <label htmlFor="deposited-amount" className='label'>Deposited amount</label>
-                            <input type="text" name='deposited_amount' id="deposited-amount" onChange={handleChange} />
-
+                            <Input
+                                label="Deposited amount"
+                                type="text"
+                                id="deposited-amount"
+                                name="deposited_amount"
+                                value={data.deposited_amount}
+                                onChange={handleChange}
+                            />
                             <div className="account-types">
                                 <div className="types type-of-customer">
                                     <label htmlFor="type-of-customer" className='card-label'>Type of customer</label>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createTeller } from '../hooks/fetchClients';
+import { Input } from './Input';
 
 export const Register = () => {
     const [firstName, setFirstName] = useState('');
@@ -45,14 +46,16 @@ export const Register = () => {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        if (name === 'first_name') {
-            setFirstName(value);
-        } else if (name === 'last_name') {
-            setLastName(value);
-        } else if (name === 'email') {
-            setEmail(value);
-        } else if (name === 'password') {
-            setPassword(value);
+        const stateSetterMap = {
+            'first_name': setFirstName,
+            'last_name': setLastName,
+            'email': setEmail,
+            'password': setPassword
+        }
+
+        const setStateFunction = stateSetterMap[name];
+        if (setStateFunction) {
+            setStateFunction(value);
         }
     };
 
@@ -70,46 +73,38 @@ export const Register = () => {
         <div className='register-form-container'>
             <h2>Register</h2>
             <form className="register-form" onSubmit={handleCreateTeller}>
-                <div className='label-input'>
-                    <label htmlFor="first_name">First Name</label>
-                    <input
-                        type="text"
-                        id="first_name"
-                        name="first_name"
-                        value={firstName}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className='label-input'>
-                    <label htmlFor="last_name">Last Name</label>
-                    <input
-                        type="last_name"
-                        id="last_name"
-                        name="last_name"
-                        value={lastName}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className='label-input'>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="text"
-                        id="email"
-                        name="email"
-                        value={email}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className='label-input'>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={password}
-                        onChange={handleInputChange}
-                    />
-                </div>
+                <Input
+                    label={'First Name:'}
+                    type="text"
+                    id="first_name"
+                    name="first_name"
+                    value={firstName}
+                    onChange={handleInputChange}
+                />
+                <Input
+                    label={'Last Name:'}
+                    type="last_name"
+                    id="last_name"
+                    name="last_name"
+                    value={lastName}
+                    onChange={handleInputChange}
+                />
+                <Input
+                    label={'Email'}
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={handleInputChange}
+                />
+                <Input
+                    label={'Password:'}
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={handleInputChange}
+                />
                 <button type="submit" >
                     Create Teller
                 </button>

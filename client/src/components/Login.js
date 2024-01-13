@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { login } from '../hooks/fetchClients';
 import { Link, useNavigate } from 'react-router-dom';
+import { Input } from './Input';
 
 function Login() {
     const [loginID, setLoginID] = useState('');
@@ -47,26 +48,22 @@ function Login() {
                     <h2>Login</h2>
                     {error && <p className='login-error'>{error}</p>}
                     <form onSubmit={handleLogin}>
-                        <div>
-                            <label htmlFor="loginID">Login ID:</label>
-                            <input
-                                type="text"
-                                id="loginID"
-                                name="loginID"
-                                value={loginID}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="password">Password:</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={password}
-                                onChange={handleInputChange}
-                            />
-                        </div>
+                        <Input
+                            label={'Login ID:'}
+                            type="text"
+                            id="loginID"
+                            name="loginID"
+                            value={loginID}
+                            onChange={handleInputChange}
+                        />
+                        <Input
+                            label={'Password:'}
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={password}
+                            onChange={handleInputChange}
+                        />
                         <button type="submit" >
                             Login
                         </button>
